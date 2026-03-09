@@ -54,9 +54,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Repositories\" />
-    <Folder Include="Service\" />
-    <Folder Include="Views\" />
+    <Folder Include="Areas\" />
+    <Folder Include="Views\NewFolder\" />
     <Folder Include="wwwroot\admin\css\" />
     <Folder Include="wwwroot\admin\img\" />
     <Folder Include="wwwroot\admin\js\" />
