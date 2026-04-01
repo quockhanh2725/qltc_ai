@@ -1,0 +1,19 @@
+﻿@model bool
+
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h2>
+        @if (Model)
+        {
+            <span style="color:green">✅ Kết nối DB thành công</span>
+        }
+        else
+        {
+            <span style="color:red">❌ Kết nối DB thất bại</span>
+        }
+    </h2>
+
+</body>
+</html>
