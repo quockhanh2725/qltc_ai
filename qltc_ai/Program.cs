@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using qltc_ai.Models;
 using qltc_ai.Repositories;
-using qltc_ai.Service;
+using qltc_ai.Service.Base;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
@@ -27,6 +27,14 @@ builder.Services.AddDbContext<qltcContext>(options =>
 
 //Repository
 builder.Services.AddScoped<IAccountRepository, AccountRepository>();
+builder.Services.AddScoped<IAILogRepository, AILogRepository>();
+builder.Services.AddScoped<IBudgetRepository, BudgetRepository>();
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IChatRepository, ChatRepository>();
+builder.Services.AddScoped<ITransactionRepository, TransactionRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+
+//Service
 builder.Services.AddScoped<IAccountService, AccountService>();
 
 var app = builder.Build();

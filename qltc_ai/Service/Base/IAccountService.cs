@@ -1,6 +1,6 @@
 ﻿using qltc_ai.Models;
 
-namespace qltc_ai.Service
+namespace qltc_ai.Service.Base
 {
     public interface IAccountService
     {

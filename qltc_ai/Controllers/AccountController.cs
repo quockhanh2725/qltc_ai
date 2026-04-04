@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using qltc_ai.Service;
+using qltc_ai.Service.Base;
 
 namespace qltc_ai.Controllers
 {
