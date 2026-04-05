@@ -36,6 +36,8 @@ builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 //Service
 builder.Services.AddScoped<IAccountService, AccountService>();
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 var app = builder.Build();
 

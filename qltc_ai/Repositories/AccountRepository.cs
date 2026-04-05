@@ -8,9 +8,29 @@ namespace qltc_ai.Repositories
         {
         }
 
+        public void addAccount(Taikhoan tk)
+        {
+            _context.Taikhoan.Add(tk);
+        }
+
+        public Taikhoan? FindById(int id)
+        {
+            return _context.Taikhoan.Find(id);
+        }
+
         public List<Taikhoan> GetAll()
         {
             return _context.Taikhoan.ToList();
+        }
+
+        public bool IsEmailTaken(string email)
+        {
+            return _context.Taikhoan.Any(e => e.Email == email);
+        }
+
+        public void Save()
+        {
+            _context.SaveChanges();
         }
     }
 }

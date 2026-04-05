@@ -9,7 +9,7 @@ public partial class Taikhoan
 
     public int? RoleId { get; set; }
 
-    public string? Email { get; set; }
+    public string Email { get; set; } = null!;
 
     public string? MatKhau { get; set; }
 
