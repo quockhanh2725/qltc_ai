@@ -9,5 +9,6 @@ namespace qltc_ai.Repositories
         void Save();
         Taikhoan? FindById(int id);
         bool IsEmailTaken(string email);
+        Taikhoan? GetByEmailAndPassword(string email, string password);
     }
 }

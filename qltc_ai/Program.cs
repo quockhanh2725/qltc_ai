@@ -20,6 +20,7 @@ builder.Services.AddControllersWithViews()
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddSession();
 
 builder.Services.AddDbContext<qltcContext>(options =>
     options.UseMySql(builder.Configuration.GetConnectionString("MySqlConnection"),
@@ -47,6 +48,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseSession();
 
 app.UseAuthorization();
 

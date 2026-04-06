@@ -39,5 +39,9 @@ namespace qltc_ai.Service.Base
 
         }
 
+        public Taikhoan? Authenticate(string email, string password)
+        {
+            return _repo.GetByEmailAndPassword(email, password);
+        }
     }
 }

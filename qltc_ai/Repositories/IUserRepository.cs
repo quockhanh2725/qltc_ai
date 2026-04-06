@@ -7,5 +7,7 @@ namespace qltc_ai.Repositories
         void addUser(Nguoidung ng);
         void Save();
         bool IsUsernameTaken(string username);
+        Nguoidung? GetByAccountId(int accId);
+        void updateUser(Nguoidung ng);
     }
 }

@@ -36,5 +36,30 @@ namespace qltc_ai.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        [HttpPost("login")]
+        public IActionResult Authenticate( string email, string password)
+        {
+            var acc = _accountService.Authenticate(email, password);
+
+            if (acc == null)
+            {
+                return BadRequest(new { message = "sai" });
+            }
+
+            if (acc.IsActive == 0)
+                return BadRequest(new { message = "tai khoan da bi khoa" });
+
+            HttpContext.Session.SetInt32("AccountId", acc.IdTaiKhoan);
+
+            switch (acc.RoleId)
+            {
+                case 2:
+                    return Ok(new { message = "user" });
+                case 1:
+                    return Ok(new { message = "admin" });
+                default:
+                    return BadRequest(new { message = "k hop le" });
+            }
+        }
     }
 }

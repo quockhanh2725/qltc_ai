@@ -37,5 +37,29 @@ namespace qltc_ai.Service.Base
             _repo.Save();
             return user;
         }
+
+        public bool UpdateUsername(int accountId, string newUsername)
+        {
+            if (newUsername == null || newUsername == "")
+                return false;
+
+            var user = _repo.GetByAccountId(accountId);
+
+            if (user == null)
+                return false;
+
+            
+            bool exist = _repo.IsUsernameTaken(newUsername) && user.TenNguoiDung != newUsername;
+
+            if (exist)
+                return false;
+
+            user.TenNguoiDung = newUsername;
+
+            _repo.updateUser(user);
+            _repo.Save();
+
+            return true;
+        }
     }
 }
