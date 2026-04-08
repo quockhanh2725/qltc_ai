@@ -9,5 +9,5 @@ public partial class Role
 
     public string? RoleName { get; set; }
 
-    public virtual ICollection<Taikhoan> Taikhoans { get; set; } = new List<Taikhoan>();
+    public virtual ICollection<Taikhoan> Taikhoan { get; set; } = new List<Taikhoan>();
 }

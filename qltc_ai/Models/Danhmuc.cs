@@ -7,7 +7,7 @@ public partial class Danhmuc
 {
     public int IdDanhMuc { get; set; }
 
-    public int? IdTongTien { get; set; }
+    public int? IdNganSach { get; set; }
 
     public string? TenDanhMuc { get; set; }
 
@@ -19,5 +19,5 @@ public partial class Danhmuc
 
     public string? DanhGia { get; set; }
 
-    public virtual ICollection<Giaodich> Giaodiches { get; set; } = new List<Giaodich>();
+    public virtual ICollection<Giaodich> Giaodich { get; set; } = new List<Giaodich>();
 }

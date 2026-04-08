@@ -26,7 +26,7 @@ public partial class qltcContext : DbContext
 
     public virtual DbSet<Muctieu> Muctieu { get; set; }
 
-    public virtual DbSet<Ngansach> Ngansache { get; set; }
+    public virtual DbSet<Ngansach> Ngansach { get; set; }
 
     public virtual DbSet<Nguoidung> Nguoidung { get; set; }
 
@@ -90,9 +90,9 @@ public partial class qltcContext : DbContext
             entity.Property(e => e.GioiHanTien)
                 .HasPrecision(15, 2)
                 .HasColumnName("gioiHanTien");
-            entity.Property(e => e.IdTongTien)
+            entity.Property(e => e.IdNganSach)
                 .HasColumnType("int(11)")
-                .HasColumnName("idTongTien");
+                .HasColumnName("idNganSach");
             entity.Property(e => e.Mau)
                 .HasMaxLength(7)
                 .HasColumnName("mau");
@@ -125,7 +125,7 @@ public partial class qltcContext : DbContext
                 .HasPrecision(15, 2)
                 .HasColumnName("soTien");
 
-            entity.HasOne(d => d.IdMucTieuNavigation).WithMany(p => p.Donggops)
+            entity.HasOne(d => d.IdMucTieuNavigation).WithMany(p => p.Donggop)
                 .HasForeignKey(d => d.IdMucTieu)
                 .HasConstraintName("donggop_ibfk_1");
         });
@@ -159,7 +159,7 @@ public partial class qltcContext : DbContext
                 .HasPrecision(15, 2)
                 .HasColumnName("tien");
 
-            entity.HasOne(d => d.IdDanhMucNavigation).WithMany(p => p.Giaodiches)
+            entity.HasOne(d => d.IdDanhMucNavigation).WithMany(p => p.Giaodich)
                 .HasForeignKey(d => d.IdDanhMuc)
                 .HasConstraintName("giaodich_ibfk_2");
 
@@ -296,7 +296,7 @@ public partial class qltcContext : DbContext
                 .HasColumnType("int(11)")
                 .HasColumnName("role_id");
 
-            entity.HasOne(d => d.Role).WithMany(p => p.Taikhoans)
+            entity.HasOne(d => d.Role).WithMany(p => p.Taikhoan)
                 .HasForeignKey(d => d.RoleId)
                 .HasConstraintName("taikhoan_ibfk_1");
         });
@@ -357,7 +357,7 @@ public partial class qltcContext : DbContext
                 .HasColumnType("datetime")
                 .HasColumnName("thoiGianGui");
 
-            entity.HasOne(d => d.IdTroChuyenNavigation).WithMany(p => p.Tinnhans)
+            entity.HasOne(d => d.IdTroChuyenNavigation).WithMany(p => p.Tinnhan)
                 .HasForeignKey(d => d.IdTroChuyen)
                 .HasConstraintName("tinnhan_ibfk_1");
         });
