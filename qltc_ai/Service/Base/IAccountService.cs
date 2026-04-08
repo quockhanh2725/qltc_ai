@@ -7,5 +7,6 @@ namespace qltc_ai.Service.Base
         List<Taikhoan> GetAccountAll();
         Taikhoan CreateAccount(Taikhoan tk);
         Taikhoan? GetAccountById(int id);
+        Taikhoan? Authenticate(string email, string password);
     }
 }

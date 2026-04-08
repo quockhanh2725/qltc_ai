@@ -1,16 +1,19 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using qltc_ai.Models;
+using qltc_ai.Service.Base;
 using System;
 
 namespace qltc_ai.Controllers
 {
+    [Route("")]
     public class HomeController : Controller
     {
         private readonly qltcContext _context;
-
-        public HomeController(qltcContext context)
+        private readonly IUserService _userService;
+        public HomeController(qltcContext context , IUserService userService)
         {
             _context = context;
+            _userService = userService;
         }
 
         public IActionResult Index()
@@ -27,6 +30,21 @@ namespace qltc_ai.Controllers
             }
 
             return View(isConnected);
+        }
+        [HttpPut("updateinfo")]
+        public IActionResult UpdateUsername(string newUsername)
+        {
+            int? accountId = HttpContext.Session.GetInt32("AccountId");
+
+            if (accountId == null)
+                return Unauthorized("chua dang nhap");
+
+            bool success = _userService.UpdateUsername(accountId.Value, newUsername);
+
+            if (success)
+                return Ok("doi ten thanh cong");
+
+            return BadRequest("ten ton tai hoac khong hop le");
         }
     }
 }

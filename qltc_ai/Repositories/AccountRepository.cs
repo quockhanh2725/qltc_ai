@@ -23,6 +23,11 @@ namespace qltc_ai.Repositories
             return _context.Taikhoan.ToList();
         }
 
+        public Taikhoan? GetByEmailAndPassword(string email, string password)
+        {
+            return _context.Taikhoan.FirstOrDefault(u => u.Email == email && u.MatKhau == password);
+        }
+
         public bool IsEmailTaken(string email)
         {
             return _context.Taikhoan.Any(e => e.Email == email);

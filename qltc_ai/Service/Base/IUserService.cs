@@ -5,5 +5,6 @@ namespace qltc_ai.Service.Base
     public interface IUserService
     {
         Nguoidung CreateUser(int id, string email);
+        bool UpdateUsername(int id, string email);
     }
 }

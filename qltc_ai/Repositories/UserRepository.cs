@@ -13,6 +13,11 @@ namespace qltc_ai.Repositories
            _context.Nguoidung.Add(ng);
         }
 
+        public Nguoidung? GetByAccountId(int accId)
+        {
+            return _context.Nguoidung.FirstOrDefault(u => u.IdTaiKhoan == accId);
+        }
+
         public bool IsUsernameTaken(string username)
         {
             return _context.Nguoidung.Any(n => n.TenNguoiDung == username);
@@ -21,6 +26,11 @@ namespace qltc_ai.Repositories
         public void Save()
         {
            _context.SaveChanges();
+        }
+
+        public void updateUser(Nguoidung ng)
+        {
+            _context.Update(ng);
         }
     }
 }
