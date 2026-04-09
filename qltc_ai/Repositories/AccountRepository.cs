@@ -8,9 +8,14 @@ namespace qltc_ai.Repositories
         {
         }
 
-        public void addAccount(Taikhoan tk)
+        public void AddAccount(Taikhoan tk)
         {
             _context.Taikhoan.Add(tk);
+        }
+
+        public void DeleteAccount(Taikhoan tk)
+        {
+            _context.Taikhoan.Remove(tk);
         }
 
         public Taikhoan? FindById(int id)

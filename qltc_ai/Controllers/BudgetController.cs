@@ -25,7 +25,7 @@ namespace qltc_ai.Controllers
             if (accountId == null)
                 return Unauthorized("Chưa đăng nhập");
 
-            bool success = _budgetService.addBudget(accountId.Value, money);
+            bool success = _budgetService.AddBudget(accountId.Value, money);
 
             if (success)
                 return Ok("OK");

@@ -252,6 +252,7 @@ public partial class qltcContext : DbContext
 
             entity.HasOne(d => d.IdTaiKhoanNavigation).WithOne(p => p.Nguoidung)
                 .HasForeignKey<Nguoidung>(d => d.IdTaiKhoan)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("nguoidung_ibfk_1");
         });
 

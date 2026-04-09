@@ -2,6 +2,8 @@
 {
     public interface IBudgetService
     {
-        bool addBudget(int accId, decimal money);
+        bool AddBudget(int accId, decimal money);
+        void AutoResetIfNeeded(int accId);
+        bool AutoAddNewAccount(int accId);
     }
 }

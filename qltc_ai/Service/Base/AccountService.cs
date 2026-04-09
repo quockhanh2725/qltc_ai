@@ -33,7 +33,7 @@ namespace qltc_ai.Service.Base
                 IsActive = 1,
                 NgayTao = DateTime.Now
             };
-            _repo.addAccount(ac);
+            _repo.AddAccount(ac);
             _repo.Save();
             return ac;
 
@@ -42,6 +42,17 @@ namespace qltc_ai.Service.Base
         public Taikhoan? Authenticate(string email, string password)
         {
             return _repo.GetByEmailAndPassword(email, password);
+        }
+
+        public bool DeleteAccount(int id)
+        {
+            var acc = _repo.FindById(id);
+            if (acc ==  null)
+                return false;
+
+            _repo.DeleteAccount(acc);
+            _repo.Save();
+            return true;
         }
     }
 }

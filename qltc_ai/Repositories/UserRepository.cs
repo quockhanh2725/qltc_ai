@@ -8,7 +8,7 @@ namespace qltc_ai.Repositories
         {
         }
 
-        public void addUser(Nguoidung ng)
+        public void AddUser(Nguoidung ng)
         {
            _context.Nguoidung.Add(ng);
         }
@@ -28,7 +28,7 @@ namespace qltc_ai.Repositories
            _context.SaveChanges();
         }
 
-        public void updateUser(Nguoidung ng)
+        public void UpdateUser(Nguoidung ng)
         {
             _context.Update(ng);
         }

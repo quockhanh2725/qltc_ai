@@ -5,10 +5,11 @@ namespace qltc_ai.Repositories
     public interface IAccountRepository
     {
         List<Taikhoan> GetAll();
-        void addAccount(Taikhoan tk);
+        void AddAccount(Taikhoan tk);
         void Save();
         Taikhoan? FindById(int id);
         bool IsEmailTaken(string email);
         Taikhoan? GetByEmailAndPassword(string email, string password);
+        void DeleteAccount(Taikhoan tk);
     }
 }

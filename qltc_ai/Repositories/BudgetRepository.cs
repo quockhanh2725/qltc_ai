@@ -18,6 +18,11 @@ namespace qltc_ai.Repositories
             return _context.Ngansach.FirstOrDefault(d => d.IdTaiKhoan == accountId && d.Thang.Value.Month == month && d.Thang.Value.Year == year);
         }
 
+        public Ngansach? GetLatest(int accId)
+        {
+            return _context.Ngansach.Where(x => x.IdTaiKhoan == accId).OrderByDescending(x => x.Thang).FirstOrDefault();
+        }
+
         public void Save()
         {
             _context.SaveChanges();
