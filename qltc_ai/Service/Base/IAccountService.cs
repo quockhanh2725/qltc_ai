@@ -8,5 +8,6 @@ namespace qltc_ai.Service.Base
         Taikhoan CreateAccount(Taikhoan tk);
         Taikhoan? GetAccountById(int id);
         Taikhoan? Authenticate(string email, string password);
+        bool DeleteAccount(int id);
     }
 }

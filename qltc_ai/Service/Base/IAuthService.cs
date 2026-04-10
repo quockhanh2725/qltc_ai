@@ -4,6 +4,7 @@ namespace qltc_ai.Service.Base
 {
     public interface IAuthService
     {
-        bool Register(Taikhoan tk);
+        Taikhoan Register(Taikhoan tk);
+        
     }
 }

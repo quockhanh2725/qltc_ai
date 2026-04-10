@@ -21,7 +21,7 @@ public partial class Muctieu
 
     public DateTime? NgayTao { get; set; }
 
-    public virtual ICollection<Donggop> Donggops { get; set; } = new List<Donggop>();
+    public virtual ICollection<Donggop> Donggop { get; set; } = new List<Donggop>();
 
     public virtual Taikhoan? IdTaiKhoanNavigation { get; set; }
 }

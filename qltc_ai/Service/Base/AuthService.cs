@@ -16,15 +16,16 @@ namespace qltc_ai.Service.Base
             _repo = repo;
         }
 
-        public bool Register(Taikhoan tk)
+        public Taikhoan Register(Taikhoan tk)
         {
             if(_repo.IsEmailTaken(tk.Email))
-                return false;
+                return null;
             var acc = _accountService.CreateAccount(tk);
 
             var use = _userService.CreateUser(acc.IdTaiKhoan, tk.Email);
             
-            return true;
+            return acc;
         }
+        
     }
 }

@@ -9,11 +9,13 @@ namespace qltc_ai.Controllers
     {
         private readonly IAccountService _accountService;
         private readonly IAuthService _authService;
+        private readonly IBudgetService _budgetService;
 
-        public AccountController(IAccountService accountService, IAuthService authService)
+        public AccountController(IAccountService accountService, IAuthService authService , IBudgetService budgetService)
         {
             _accountService = accountService;
             _authService = authService;
+            _budgetService = budgetService;
         }
 
         [HttpGet("")]
@@ -29,6 +31,10 @@ namespace qltc_ai.Controllers
             try
             {
                 var result = _authService.Register(_tk);
+                if (result == null)
+                    return BadRequest("Email đã tồn tại");
+
+                _budgetService.AutoAddNewAccount(result.IdTaiKhoan);
                 return Ok(result);
             }
             catch (Exception ex)
@@ -51,6 +57,8 @@ namespace qltc_ai.Controllers
 
             HttpContext.Session.SetInt32("AccountId", acc.IdTaiKhoan);
 
+            _budgetService.AutoResetIfNeeded(acc.IdTaiKhoan);
+
             switch (acc.RoleId)
             {
                 case 2:
@@ -60,6 +68,15 @@ namespace qltc_ai.Controllers
                 default:
                     return BadRequest(new { message = "k hop le" });
             }
+        }
+        [HttpDelete("delete/{id}")]
+        public IActionResult DeleteAccount(int id)
+        {
+            var tb = _accountService.DeleteAccount(id);
+
+            if (!tb)
+                return BadRequest(new { message = "k co tk" });
+            return Ok();
         }
     }
 }

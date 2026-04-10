@@ -33,7 +33,7 @@ namespace qltc_ai.Service.Base
                 TenNguoiDung = username
             };
 
-            _repo.addUser(user);
+            _repo.AddUser(user);
             _repo.Save();
             return user;
         }
@@ -56,7 +56,7 @@ namespace qltc_ai.Service.Base
 
             user.TenNguoiDung = newUsername;
 
-            _repo.updateUser(user);
+            _repo.UpdateUser(user);
             _repo.Save();
 
             return true;

@@ -13,5 +13,5 @@ public partial class Trochuyen
 
     public virtual Taikhoan? IdTaiKhoanNavigation { get; set; }
 
-    public virtual ICollection<Tinnhan> Tinnhans { get; set; } = new List<Tinnhan>();
+    public virtual ICollection<Tinnhan> Tinnhan { get; set; } = new List<Tinnhan>();
 }
