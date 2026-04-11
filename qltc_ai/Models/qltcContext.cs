@@ -102,6 +102,12 @@ public partial class qltcContext : DbContext
             entity.Property(e => e.TienDaTieu)
                 .HasPrecision(15, 2)
                 .HasColumnName("tienDaTieu");
+
+            entity.HasOne(d => d.IdNganSachNavigation)
+            .WithMany(p => p.Danhmuc)
+            .HasForeignKey(d => d.IdNganSach)
+            .OnDelete(DeleteBehavior.Cascade)
+            .HasConstraintName("danhmuc_ibfk_1");
         });
 
         modelBuilder.Entity<Donggop>(entity =>
@@ -161,11 +167,12 @@ public partial class qltcContext : DbContext
 
             entity.HasOne(d => d.IdDanhMucNavigation).WithMany(p => p.Giaodich)
                 .HasForeignKey(d => d.IdDanhMuc)
-                .HasConstraintName("giaodich_ibfk_2");
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("fk_giaodich_danhmuc");
 
             entity.HasOne(d => d.IdTaiKhoanNavigation).WithMany(p => p.Giaodich)
                 .HasForeignKey(d => d.IdTaiKhoan)
-                .HasConstraintName("giaodich_ibfk_1");
+                .HasConstraintName("fk_giaodich_taikhoan");
         });
 
         modelBuilder.Entity<Muctieu>(entity =>
@@ -229,7 +236,8 @@ public partial class qltcContext : DbContext
 
             entity.HasOne(d => d.IdTaiKhoanNavigation).WithMany(p => p.Ngansach)
                 .HasForeignKey(d => d.IdTaiKhoan)
-                .HasConstraintName("ngansach_ibfk_1");
+                .OnDelete(DeleteBehavior.Cascade)
+                .HasConstraintName("fk_ngansach_taikhoan");
         });
 
         modelBuilder.Entity<Nguoidung>(entity =>
@@ -300,6 +308,7 @@ public partial class qltcContext : DbContext
             entity.HasOne(d => d.Role).WithMany(p => p.Taikhoan)
                 .HasForeignKey(d => d.RoleId)
                 .HasConstraintName("taikhoan_ibfk_1");
+
         });
 
         modelBuilder.Entity<Thongbao>(entity =>

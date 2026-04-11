@@ -20,4 +20,5 @@ public partial class Danhmuc
     public string? DanhGia { get; set; }
 
     public virtual ICollection<Giaodich> Giaodich { get; set; } = new List<Giaodich>();
+    public virtual Ngansach IdNganSachNavigation { get; set; } = null!;
 }
