@@ -1,0 +1,36 @@
+﻿using Microsoft.AspNetCore.Mvc;
+using qltc_ai.Service.Base;
+
+namespace qltc_ai.Controllers
+{
+    [Route("transaction")]
+    public class TransactionController : Controller
+    {
+        private readonly ITransactionService _tranService;
+        public TransactionController(ITransactionService tranService)
+        {
+            _tranService = tranService;
+        }
+        [HttpGet("")]
+        public IActionResult Index()
+        {  
+            return View();
+        }
+
+        [HttpPost("add")]
+        public IActionResult Add(int idCate, decimal money, string note)
+        {
+            var accId = HttpContext.Session.GetInt32("AccountId");
+
+            if (accId == null)
+                return Unauthorized("Vui Long Dang Nhap");
+
+            var ok = _tranService.AddTransaction(accId.Value, idCate, money, note);
+
+            if (ok)
+                return Ok(new { message = "them thanh cong" });
+
+            return BadRequest(new { message = "du lieu sai hoac khac thang" });
+        }
+    }
+}

@@ -6,9 +6,9 @@ namespace qltc_ai.Repositories
     {
         Ngansach? GetByMonth(int accountId, int month, int year);
         Ngansach? GetLatest(int accId);
-        void Add(Ngansach ns);
-        void Update(Ngansach ns);
+        void AddBudget(Ngansach ns);
+        void UpdateBudget(Ngansach ns);
         void Save();
-        Ngansach? GetBudgetById(int id);
+        Ngansach? FindById(int id);
     }
 }

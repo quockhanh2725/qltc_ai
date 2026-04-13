@@ -8,5 +8,6 @@ namespace qltc_ai.Repositories
         void AddRange(List<Danhmuc> list);
         void Save();
         Danhmuc? GetCategoryById(int id);
+        void UpdateCategory(Danhmuc cate);
     }
 }

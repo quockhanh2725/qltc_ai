@@ -26,7 +26,7 @@ namespace qltc_ai.Service.Base
                 return false;
             ns.TongTien = ns.TongTien + money;
 
-            _repo.Update(ns);
+            _repo.UpdateBudget(ns);
             _repo.Save();
 
             return true;
@@ -58,7 +58,7 @@ namespace qltc_ai.Service.Base
                 TongTien = newTotal
             };
 
-            _repo.Add(newBudget);
+            _repo.AddBudget(newBudget);
             _repo.Save();
 
             if (prev != null)
@@ -109,7 +109,7 @@ namespace qltc_ai.Service.Base
                 TongTien = 0 
             };
 
-            _repo.Add(budget);
+            _repo.AddBudget(budget);
             _repo.Save();
 
             var defaultCategories = new List<Danhmuc>

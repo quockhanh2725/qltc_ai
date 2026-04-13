@@ -40,6 +40,7 @@ builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IBudgetService, BudgetService>();
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 var app = builder.Build();
 
@@ -49,12 +50,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-app.UseSession();
 
-app.MapControllers();
+
+app.UseSession();
 
 app.UseAuthorization();
 
+app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",

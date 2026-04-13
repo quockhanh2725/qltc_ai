@@ -37,7 +37,7 @@ namespace qltc_ai.Controllers
             int? accountId = HttpContext.Session.GetInt32("AccountId");
 
             if (accountId == null)
-                return Unauthorized("Chưa đăng nhập");
+                return Unauthorized("Vui Long Dang Nhap");
 
 
             bool success = _userService.UpdateUsername(accountId.Value, newUsername);
