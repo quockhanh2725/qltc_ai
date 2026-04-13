@@ -51,9 +51,10 @@ if (app.Environment.IsDevelopment())
 }
 app.UseSession();
 
+app.MapControllers();
+
 app.UseAuthorization();
 
-app.MapControllers();
 
 app.MapControllerRoute(
     name: "default",

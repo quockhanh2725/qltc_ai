@@ -13,6 +13,11 @@ namespace qltc_ai.Repositories
             _context.Add(ns);
         }
 
+        public Ngansach? GetBudgetById(int id)
+        {
+            return _context.Ngansach.FirstOrDefault(x => x.IdNganSach == id);
+        }
+
         public Ngansach? GetByMonth(int accountId, int month, int year)
         {
             return _context.Ngansach.FirstOrDefault(d => d.IdTaiKhoan == accountId && d.Thang.Value.Month == month && d.Thang.Value.Year == year);

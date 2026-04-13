@@ -9,5 +9,6 @@ namespace qltc_ai.Repositories
         void Add(Ngansach ns);
         void Update(Ngansach ns);
         void Save();
+        Ngansach? GetBudgetById(int id);
     }
 }
