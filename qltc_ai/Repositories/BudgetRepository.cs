@@ -8,14 +8,14 @@ namespace qltc_ai.Repositories
         {
         }
 
-        public void Add(Ngansach ns)
+        public void AddBudget(Ngansach ns)
         {
             _context.Add(ns);
         }
 
-        public Ngansach? GetBudgetById(int id)
+        public Ngansach? FindById(int id)
         {
-            return _context.Ngansach.FirstOrDefault(x => x.IdNganSach == id);
+            return _context.Ngansach.Find(id);
         }
 
         public Ngansach? GetByMonth(int accountId, int month, int year)
@@ -33,7 +33,7 @@ namespace qltc_ai.Repositories
             _context.SaveChanges();
         }
 
-        public void Update(Ngansach ns)
+        public void UpdateBudget(Ngansach ns)
         {
             _context.Ngansach.Update(ns);
         }

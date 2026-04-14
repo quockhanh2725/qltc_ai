@@ -7,7 +7,7 @@ public partial class Danhmuc
 {
     public int IdDanhMuc { get; set; }
 
-    public int? IdNganSach { get; set; }
+    public int IdNganSach { get; set; }
 
     public string? TenDanhMuc { get; set; }
 

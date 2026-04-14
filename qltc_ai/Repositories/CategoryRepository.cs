@@ -27,5 +27,10 @@ namespace qltc_ai.Repositories
         {
             _context.SaveChanges();
         }
+
+        public void UpdateCategory(Danhmuc cate)
+        {
+            _context.Danhmuc.Update(cate);
+        }
     }
 }
