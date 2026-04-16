@@ -55,7 +55,7 @@ namespace qltc_ai.Service.Base
 
             cate.TienDaTieu = (cate.TienDaTieu ?? 0) + money;
             _categoryRepo.UpdateCategory(cate);
-            //_categoryService.Rating(cate);
+            _categoryService.Rating(cate);
 
             _transactionRepo.Save();
             _categoryRepo.Save();
@@ -63,7 +63,27 @@ namespace qltc_ai.Service.Base
             return true;
         }
 
-        
+        public bool DeleteTransaction(int accid, int idTran)
+        {
+            var tran = _transactionRepo.FindById(idTran);
+            if (tran == null || tran.IdTaiKhoan != accid)
+                return false;
+
+            var cate = _categoryRepo.FindById(tran.IdDanhMuc.Value);
+            if (cate == null)
+                return false;
+
+            cate.TienDaTieu = (cate.TienDaTieu ?? 0) - tran.Tien;
+
+            _categoryRepo.UpdateCategory(cate);
+            _transactionRepo.DeleteTransaction(tran);
+            _categoryService.Rating(cate);
+
+            _categoryRepo.Save();
+            _transactionRepo.Save();
+
+            return true;
+        }
 
         public bool UpdateTransaction(int accid , int idTran , decimal newMoney , string newNote)
         {
@@ -88,7 +108,7 @@ namespace qltc_ai.Service.Base
             
             _categoryRepo.UpdateCategory(cate);
             _transactionRepo.Update(tran);
-            //_categoryService.Rating(cate);
+            _categoryService.Rating(cate);
 
             _categoryRepo.Save();
             _transactionRepo.Save();
