@@ -18,9 +18,9 @@ namespace qltc_ai.Repositories
             return _context.Danhmuc.Where(x => x.IdNganSach == budgetId).ToList();
         }
 
-        public Danhmuc? GetCategoryById(int id)
+        public Danhmuc? FindById(int id)
         {
-            return _context.Danhmuc.FirstOrDefault(x => x.IdDanhMuc == id);
+            return _context.Danhmuc.Find(id);
         }
 
         public void Save()

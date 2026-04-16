@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using qltc_ai.Models;
+using qltc_ai.Models.Enum;
 using qltc_ai.Service.Base;
 
 namespace qltc_ai.Controllers
@@ -25,21 +26,44 @@ namespace qltc_ai.Controllers
             return Ok(acc);
             //return View();
         }
-        [HttpPost("register")]
-        public IActionResult Register([FromBody] Taikhoan _tk)
+        [HttpPost("send")]
+        public IActionResult SendOtp(string email, string password)
         {
-            try
-            {
-                var result = _authService.Register(_tk);
-                if (result == null)
-                    return BadRequest("Email đã tồn tại");
+            if (_authService.IsEmailExists(email))
+                return BadRequest(new { message = "email da ton tai" });
 
-                _budgetService.AutoAddNewAccount(result.IdTaiKhoan);
-                return Ok(result);
-            }
-            catch (Exception ex)
+            _authService.SaveOtp(email, password);
+
+            return Ok(new { message = "da gui otp" });
+        }
+        [HttpPost("verify")]
+        public IActionResult VerifyOtp(string email, string otp)
+        {
+            var ok = _authService.VerifyOtp(email, otp);
+
+            if (!ok)
+                return BadRequest(new { message = "otp sai hoac het han" });
+
+            return Ok(new { message = "otp dung" });
+        }
+        [HttpPost("register")]
+        public IActionResult Register(string email)
+        {
+            var result = _authService.Register(email);
+
+            switch (result.Status)
             {
-                return BadRequest(ex.Message);
+                case RegisterStatus.NotSendOtp:
+                    return BadRequest(new { message = "chua gui otp" });
+
+                case RegisterStatus.NotVerified:
+                    return BadRequest(new { message = "chua xac thuc otp" });
+
+                case RegisterStatus.Success:
+                    return Ok(result.Data);
+
+                default:
+                    return BadRequest(new { message = "loi" });
             }
         }
         [HttpPost("login")]

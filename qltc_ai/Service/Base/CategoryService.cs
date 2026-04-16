@@ -6,21 +6,21 @@ namespace qltc_ai.Service.Base
 {
     public class CategoryService : ICategoryService
     {
-        private readonly ICategoryRepository _cateRepo;
+        private readonly ICategoryRepository _categoryRepo;
         private readonly IBudgetRepository _budgetRepo;
         public CategoryService(IBudgetRepository budgetRepo, ICategoryRepository cateRepo)
         {
-            _cateRepo = cateRepo;
+            _categoryRepo = cateRepo;
             _budgetRepo = budgetRepo;
         }
         public List<Danhmuc> GetAllCatrgory(int id)
         {
-            return _cateRepo.GetByBudget(id).ToList();
+            return _categoryRepo.GetByBudget(id).ToList();
         }
 
         public (bool success, decimal thieu) UpdateLimit(int accId, int idCate, decimal newLimit)
         {
-            var category = _cateRepo.GetCategoryById(idCate);
+            var category = _categoryRepo.FindById(idCate);
             if (category == null)
                 return (false, 0);
 
@@ -31,7 +31,7 @@ namespace qltc_ai.Service.Base
             if (budget.IdTaiKhoan != accId)
                 return (false, 0);
 
-            var categories = _cateRepo.GetByBudget(category.IdNganSach);
+            var categories = _categoryRepo.GetByBudget(category.IdNganSach);
 
             decimal tongHienTai = categories.Sum(x => x.GioiHanTien ?? 0);
             decimal gioiHanCu = category.GioiHanTien ?? 0;
@@ -53,10 +53,13 @@ namespace qltc_ai.Service.Base
             }
 
             category.GioiHanTien = newLimit;
-            _cateRepo.UpdateCategory(category);
-            _cateRepo.Save();
+            //Rating(category);
+            _categoryRepo.UpdateCategory(category);
+            _categoryRepo.Save();
 
             return (true, 0);
         }
+
+        
     }
 }

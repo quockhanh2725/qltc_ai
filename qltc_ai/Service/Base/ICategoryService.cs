@@ -6,5 +6,6 @@ namespace qltc_ai.Service.Base
     {
         List<Danhmuc> GetAllCatrgory(int id);
         (bool success, decimal thieu) UpdateLimit(int accId, int idCate, decimal newLimit);
+        //void Rating(Danhmuc category);
     }
 }

@@ -32,5 +32,23 @@ namespace qltc_ai.Controllers
 
             return BadRequest(new { message = "du lieu sai hoac khac thang" });
         }
+
+        [HttpPut("update")]
+        public IActionResult Update(int idTran, decimal newMoney, string newNote)
+        {
+            var accId = HttpContext.Session.GetInt32("AccountId");
+
+            if (accId == null)
+                return Unauthorized("Vui Long Dang Nhap");
+
+            var ok = _tranService.UpdateTransaction(accId.Value, idTran, newMoney, newNote);
+
+            if (ok)
+                return Ok(new { message = "sua thanh cong" });
+
+            return BadRequest(new { message = "du lieu sai" });
+        }
+
+        
     }
 }

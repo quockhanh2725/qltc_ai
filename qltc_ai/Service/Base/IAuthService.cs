@@ -4,7 +4,10 @@ namespace qltc_ai.Service.Base
 {
     public interface IAuthService
     {
-        Taikhoan Register(Taikhoan tk);
-        
+        RegisterResult Register(string email);
+        bool IsEmailExists(string email);
+        void SaveOtp(string email, string password);
+        bool VerifyOtp(string email, string otp);
+
     }
 }

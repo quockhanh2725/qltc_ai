@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using qltc_ai.Models;
 using qltc_ai.Repositories;
+using qltc_ai.Service;
 using qltc_ai.Service.Base;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
@@ -42,6 +43,8 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IBudgetService, BudgetService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+
+builder.Services.AddSingleton<EmailService>();
 
 var app = builder.Build();
 

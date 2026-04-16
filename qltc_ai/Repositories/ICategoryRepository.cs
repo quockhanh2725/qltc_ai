@@ -7,7 +7,7 @@ namespace qltc_ai.Repositories
         List<Danhmuc> GetByBudget(int budgetId);
         void AddRange(List<Danhmuc> list);
         void Save();
-        Danhmuc? GetCategoryById(int id);
+        Danhmuc? FindById(int id);
         void UpdateCategory(Danhmuc cate);
     }
 }
