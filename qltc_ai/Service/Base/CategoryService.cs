@@ -53,13 +53,29 @@ namespace qltc_ai.Service.Base
             }
 
             category.GioiHanTien = newLimit;
-            //Rating(category);
+            Rating(category);
             _categoryRepo.UpdateCategory(category);
             _categoryRepo.Save();
 
             return (true, 0);
         }
 
-        
+        public void Rating(Danhmuc cate)
+        {
+            if (cate.GioiHanTien <= 0)
+            {
+                cate.DanhGia = "khong hop le";
+                return;
+            }
+
+            var percent = (cate.TienDaTieu ?? 0) / cate.GioiHanTien;
+
+            if (percent <= 0.5m)
+                cate.DanhGia = "Tot";
+            else if (percent <= 0.8m)
+                cate.DanhGia = "TrungBinh";
+            else
+                cate.DanhGia = "Xau";
+        }
     }
 }

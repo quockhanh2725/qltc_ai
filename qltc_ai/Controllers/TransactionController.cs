@@ -49,6 +49,20 @@ namespace qltc_ai.Controllers
             return BadRequest(new { message = "du lieu sai" });
         }
 
-        
+        [HttpDelete("delete/{id}")]
+        public IActionResult Delete(int id)
+        {
+            var accId = HttpContext.Session.GetInt32("AccountId");
+
+            if (accId == null)
+                return Unauthorized(new { message = "vui long dang nhap" });
+
+            var ok = _tranService.DeleteTransaction(accId.Value, id);
+
+            if (ok)
+                return Ok(new { message = "xoa thanh cong" });
+
+            return BadRequest(new { message = "khong tim thay giao dich" });
+        }
     }
 }
