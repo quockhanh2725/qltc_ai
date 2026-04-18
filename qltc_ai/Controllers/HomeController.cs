@@ -6,6 +6,7 @@ using System;
 namespace qltc_ai.Controllers
 {
     [Route("")]
+    [CheckLogin]
     public class HomeController : Controller
     {
         private readonly qltcContext _context;
@@ -35,10 +36,6 @@ namespace qltc_ai.Controllers
         public IActionResult UpdateUsername(string newUsername)
         {
             int? accountId = HttpContext.Session.GetInt32("AccountId");
-
-            if (accountId == null)
-                return Unauthorized("Vui Long Dang Nhap");
-
 
             bool success = _userService.UpdateUsername(accountId.Value, newUsername);
 

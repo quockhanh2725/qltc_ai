@@ -4,6 +4,7 @@ using qltc_ai.Service.Base;
 namespace qltc_ai.Controllers
 {
     [Route("transaction")]
+    [CheckLogin]
     public class TransactionController : Controller
     {
         private readonly ITransactionService _tranService;
@@ -16,14 +17,10 @@ namespace qltc_ai.Controllers
         {  
             return View();
         }
-
         [HttpPost("add")]
         public IActionResult Add(int idCate, decimal money, string note)
         {
             var accId = HttpContext.Session.GetInt32("AccountId");
-
-            if (accId == null)
-                return Unauthorized("Vui Long Dang Nhap");
 
             var ok = _tranService.AddTransaction(accId.Value, idCate, money, note);
 
@@ -38,9 +35,6 @@ namespace qltc_ai.Controllers
         {
             var accId = HttpContext.Session.GetInt32("AccountId");
 
-            if (accId == null)
-                return Unauthorized("Vui Long Dang Nhap");
-
             var ok = _tranService.UpdateTransaction(accId.Value, idTran, newMoney, newNote);
 
             if (ok)
@@ -52,12 +46,8 @@ namespace qltc_ai.Controllers
         [HttpDelete("delete/{id}")]
         public IActionResult Delete(int id)
         {
-            var accId = HttpContext.Session.GetInt32("AccountId");
 
-            if (accId == null)
-                return Unauthorized(new { message = "vui long dang nhap" });
-
-            var ok = _tranService.DeleteTransaction(accId.Value, id);
+            var ok = _tranService.DeleteTransaction(id);
 
             if (ok)
                 return Ok(new { message = "xoa thanh cong" });

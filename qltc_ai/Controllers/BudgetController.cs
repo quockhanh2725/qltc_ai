@@ -4,6 +4,7 @@ using qltc_ai.Service.Base;
 namespace qltc_ai.Controllers
 {
     [Route("budget")]
+    [CheckLogin]
     public class BudgetController : Controller
     {
         private readonly IBudgetService _budgetService;
@@ -20,10 +21,8 @@ namespace qltc_ai.Controllers
         [HttpPut("add")]
         public IActionResult AddMoney(decimal money)
         {
-            int? accountId = HttpContext.Session.GetInt32("AccountId");
 
-            if (accountId == null)
-                return Unauthorized("Vui Long Dang Nhap");
+            var accountId = HttpContext.Session.GetInt32("AccountId");
 
             bool success = _budgetService.AddBudget(accountId.Value, money);
 
