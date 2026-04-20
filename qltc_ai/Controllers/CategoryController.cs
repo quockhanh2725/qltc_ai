@@ -4,7 +4,7 @@ using qltc_ai.Service.Base;
 namespace qltc_ai.Controllers
 {
     [Route("category")]
-    [CheckLogin]
+    //[CheckLogin]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _cateService;
@@ -17,7 +17,12 @@ namespace qltc_ai.Controllers
         {
             return View();
         }
-
+        [HttpGet("by-budget")]
+        public IActionResult GetByBudget(int budgetId)
+        {
+            var list = _cateService.GetAllCatrgory(budgetId);
+            return Ok(list);
+        }
         [HttpPut("ulimit")]
         public IActionResult UpdateLimit(int idCate, decimal newLimit)
         {

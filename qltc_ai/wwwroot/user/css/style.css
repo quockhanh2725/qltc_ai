@@ -151,9 +151,9 @@ button{font-family:inherit;cursor:pointer}
 /* FORM */
 .f-grp{display:flex;flex-direction:column;gap:5px}
 .f-lbl{font-size:10px;text-transform:uppercase;letter-spacing:.7px;color:var(--text3);font-weight:700}
-.f-inp{width:100%;background:var(--surf);border:1.5px solid var(--border);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--text);outline:none;font-family:inherit;transition:border-color .18s,box-shadow .18s;appearance:none}
+.f-inp{width:200%;background:var(--surf);border:1.5px solid var(--border);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--text);outline:none;font-family:inherit;transition:border-color .18s,box-shadow .18s;appearance:none}
 .f-inp:focus{border-color:var(--indigo);box-shadow:0 0 0 3px rgba(79,70,229,.1)}
-.cat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.cat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
 .cat-chip{padding:9px 6px;border-radius:10px;border:1.5px solid var(--border);background:var(--surf);text-align:center;cursor:pointer;transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:4px}
 .cat-chip:hover,.cat-chip.on{border-color:var(--indigo);background:var(--indigo-p)}
 .cat-chip-ico{font-size:19px;line-height:1}
@@ -203,7 +203,7 @@ button{font-family:inherit;cursor:pointer}
 .ai-live-chip .chip-dot{width:6px;height:6px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite}
 
 /* AI BOX */
-.ai-box{background:linear-gradient(135deg,#1a1726,#252236);border-radius:14px;padding:18px 20px;border:1px solid rgba(99,102,241,.3);position:relative;overflow:hidden;box-shadow:0 8px 30px rgba(99,102,241,.15)}
+.ai-box{background:linear-gradient(135deg,#1a1726,#252236);border-radius:14px;padding:18px 20px;border:1px solid rgba(99,102,241,.3);position:relative;box-shadow:0 8px 30px rgba(99,102,241,.15)}
 .ai-box::before{content:'';position:absolute;top:-60px;right:-60px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(99,102,241,.15),transparent 70%);pointer-events:none}
 .ai-box-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:rgba(165,180,252,.7);font-weight:700;margin-bottom:10px}
 .ai-inp-wrap{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.12);border-radius:11px;padding:10px 14px;transition:border-color .2s}

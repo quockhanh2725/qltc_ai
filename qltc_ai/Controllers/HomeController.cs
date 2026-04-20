@@ -6,7 +6,7 @@ using System;
 namespace qltc_ai.Controllers
 {
     [Route("")]
-    [CheckLogin]
+    //[CheckLogin]
     public class HomeController : Controller
     {
         private readonly qltcContext _context;
