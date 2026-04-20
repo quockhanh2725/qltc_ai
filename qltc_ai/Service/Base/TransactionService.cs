@@ -63,10 +63,10 @@ namespace qltc_ai.Service.Base
             return true;
         }
 
-        public bool DeleteTransaction(int accid, int idTran)
+        public bool DeleteTransaction(int idTran)
         {
             var tran = _transactionRepo.FindById(idTran);
-            if (tran == null || tran.IdTaiKhoan != accid)
+            if (tran == null )
                 return false;
 
             var cate = _categoryRepo.FindById(tran.IdDanhMuc.Value);

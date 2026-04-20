@@ -54,6 +54,16 @@ namespace qltc_ai.Service.Base
 
         public void SaveOtp(string email, string password)
         {
+            if (OtpStore.data.ContainsKey(email))
+            {
+                var old = OtpStore.data[email];
+
+                if (old.NextSend > DateTime.Now)
+                {
+                    throw new Exception($"Đợi {(int)(old.NextSend - DateTime.Now).TotalSeconds}s để gửi lại");
+                }
+            }
+
             var otp = new Random().Next(100000, 999999).ToString();
 
             OtpStore.data[email] = new Otp
@@ -61,6 +71,7 @@ namespace qltc_ai.Service.Base
                 Code = otp,
                 Expire = DateTime.Now.AddMinutes(5),
                 IsVerified = false,
+                NextSend = DateTime.Now.AddSeconds(60),
                 Email = email,
                 Password = password
             };

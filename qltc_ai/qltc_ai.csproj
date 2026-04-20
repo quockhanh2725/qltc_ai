@@ -71,7 +71,6 @@
     <Folder Include="wwwroot\admin\js\" />
     <Folder Include="wwwroot\img\" />
     <Folder Include="wwwroot\login\" />
-    <Folder Include="wwwroot\user\css\" />
     <Folder Include="wwwroot\user\img\" />
     <Folder Include="wwwroot\user\js\" />
     <Folder Include="wwwroot\user\plugins\" />

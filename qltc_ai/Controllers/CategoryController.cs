@@ -4,6 +4,7 @@ using qltc_ai.Service.Base;
 namespace qltc_ai.Controllers
 {
     [Route("category")]
+    [CheckLogin]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _cateService;
@@ -21,9 +22,6 @@ namespace qltc_ai.Controllers
         public IActionResult UpdateLimit(int idCate, decimal newLimit)
         {
             var accId = HttpContext.Session.GetInt32("AccountId");
-
-            if (accId == null)
-                return Unauthorized(new { message = "vui long dang nhap" });
 
             var result = _cateService.UpdateLimit(accId.Value, idCate, newLimit);
 

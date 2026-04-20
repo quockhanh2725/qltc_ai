@@ -22,19 +22,24 @@ namespace qltc_ai.Controllers
         [HttpGet("")]
         public IActionResult Index()
         {
-            var acc = _accountService.GetAccountAll();
-            return Ok(acc);
-            //return View();
+            return View();
         }
         [HttpPost("send")]
         public IActionResult SendOtp(string email, string password)
         {
-            if (_authService.IsEmailExists(email))
-                return BadRequest(new { message = "email da ton tai" });
+            try
+            {
+                if (_authService.IsEmailExists(email))
+                    return BadRequest(new { message = "Email đã tồn tại" });
 
-            _authService.SaveOtp(email, password);
+                _authService.SaveOtp(email, password);
 
-            return Ok(new { message = "da gui otp" });
+                return Ok(new { message = "Thành công" });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
         [HttpPost("verify")]
         public IActionResult VerifyOtp(string email, string otp)
@@ -49,6 +54,7 @@ namespace qltc_ai.Controllers
         [HttpPost("register")]
         public IActionResult Register(string email)
         {
+            
             var result = _authService.Register(email);
 
             switch (result.Status)
@@ -73,11 +79,11 @@ namespace qltc_ai.Controllers
 
             if (acc == null)
             {
-                return BadRequest(new { message = "sai" });
+                return BadRequest(new { message = "Tài khoản hoặc mật khẩu không đúng" });
             }
 
             if (acc.IsActive == 0)
-                return BadRequest(new { message = "tai khoan da bi khoa" });
+                return BadRequest(new { message = "Tài khoản của bạn đã bị khoá" });
 
             HttpContext.Session.SetInt32("AccountId", acc.IdTaiKhoan);
 

@@ -60,6 +60,8 @@ app.UseSession();
 
 app.UseAuthorization();
 
+app.UseStaticFiles();
+
 app.MapControllers();
 
 app.MapControllerRoute(
