@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>@ViewData["Title"] - Ví Thông Minh</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/user/css/style.css" asp-append-version="true">
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sb-head">
+            <a class="sb-logo" href="/">
+                <div class="sb-logo-icon">💰</div>
+                <div>
+                    <div class="sb-logo-text">Ví<em>Thông</em>Minh</div>
+                    <div class="sb-tagline">Quản lý tài chính thông minh</div>
+                </div>
+            </a>
+        </div>
+
+        <nav class="sb-nav">
+            <div class="sb-section">Menu chính</div>
+            <a class="nav-btn active" href="/">📊 Tổng quan</a>
+            <a class="nav-btn" href="/transaction">✏️ Nhập chi tiêu</a>
+            <a class="nav-btn" href="/category">🎯 Ngân sách</a>
+            <a class="nav-btn" href="/report">📈 Báo cáo</a>
+            <a class="nav-btn" href="/history">🕑 Lịch sử</a>
+            <a class="nav-btn" href="/ai">🤖 Gợi ý AI</a>
+        </nav>
+
+        <div class="sb-user">
+            <div class="avatar">LY</div>
+            <div>
+                <div class="u-name">025lylia</div>
+                <div class="u-email">025lylia@gmail.com</div>
+            </div>
+            <button class="logout-btn" id="btn-logout"><i class="fa fa-sign-out" style="font-size:20px;color:red"></i></button>
+        </div>
+    </div>
+
+        
+            @RenderBody()
+
+    </div>
+
+
+    @RenderSection("Scripts", required: false)
+
+</body>
+</html>

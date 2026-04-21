@@ -127,5 +127,10 @@ namespace qltc_ai.Service.Base
 
             return true;
         }
+
+        public Ngansach? GetBudgetByMonth(int accid, int month, int year)
+        {
+            return _repo.GetByMonth(accid, month, year);
+        }
     }
 }

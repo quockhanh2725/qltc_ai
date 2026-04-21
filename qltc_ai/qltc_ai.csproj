@@ -72,7 +72,6 @@
     <Folder Include="wwwroot\img\" />
     <Folder Include="wwwroot\login\" />
     <Folder Include="wwwroot\user\img\" />
-    <Folder Include="wwwroot\user\js\" />
     <Folder Include="wwwroot\user\plugins\" />
   </ItemGroup>
 
