@@ -27,7 +27,7 @@ namespace qltc_ai.Controllers
             if (ok)
                 return Ok(new { message = "them thanh cong" });
 
-            return BadRequest(new { message = "du lieu sai hoac khac thang" });
+            return BadRequest(new { message = "Số tiền vượt quá giới hạn" });
         }
 
         [HttpPut("update")]
@@ -40,7 +40,7 @@ namespace qltc_ai.Controllers
             if (ok)
                 return Ok(new { message = "sua thanh cong" });
 
-            return BadRequest(new { message = "du lieu sai" });
+            return BadRequest(new { message = "Số tiền vượt quá giới hạn" });
         }
 
         [HttpDelete("delete/{id}")]

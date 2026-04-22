@@ -39,6 +39,63 @@ document.addEventListener("DOMContentLoaded", () => {
         btn.textContent = isHidden ? '🙈' : '👁';
     }
 
+    function checkPwStrength(input) {
+        const val = input.value;
+        const fill = document.getElementById('pw-strength-fill');
+        if (!fill) return;
+
+        let score = 0;
+        if (val.length >= 6) score++;
+        if (/[A-Z]/.test(val)) score++;
+        if (/[0-9]/.test(val)) score++;
+        if (/[^A-Za-z0-9]/.test(val)) score++;
+
+        const widths = ['0%', '25%', '50%', '75%', '100%'];
+        const colors = ['#ef4444', '#f59e0b', '#eab308', '#22c55e', '#16a34a'];
+        fill.style.width = widths[score] || '0%';
+        fill.style.background = colors[score - 1] || '#ef4444';
+    }
+
+    async function doLogin() {
+
+        const email = document.querySelector('#panel-login input[type=text]').value.trim();
+        const password = document.getElementById('pw-login').value;
+
+        if (!email || !password) {
+            return showToast('Vui lòng nhập email và mật khẩu.', 'warn');
+        }
+
+        if (password.length < 6) {
+            return showToast('Mật khẩu ít nhất 6 ký tự', 'warn');
+        }
+
+
+        const btn = document.querySelector('#panel-login .auth-btn.primary');
+        btn.disabled = true;
+        btn.textContent = '⏳ Đang xử lý...';
+
+        try {
+            const res = await fetch('/account/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) throw new Error(data.message);
+
+            showToast('Đăng nhập thành công', 'ok');
+            setTimeout(() => window.location.href = '/', 1000);
+
+        } catch (err) {
+            showToast(err.message, 'warn');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Đăng nhập';
+        }
+    }
+
     function showToast(msg, type) {
         const existing = document.querySelector('.auth-toast');
         if (existing) existing.remove();
@@ -128,7 +185,13 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    
+    document.getElementById("pw-reg")
+        ?.addEventListener("input", (e) => checkPwStrength(e.target));
+
+
+    btnLogin?.addEventListener("click", doLogin);
+
+
 
     otpIds.forEach((id, index) => {
         const input = document.getElementById(id);
