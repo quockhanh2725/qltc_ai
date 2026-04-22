@@ -18,6 +18,10 @@ document.addEventListener("DOMContentLoaded", () => {
         'otp-box-6'
     ];
 
+    btnLogin?.addEventListener("click", doLogin);
+    btnRegister?.addEventListener("click", doRegister);
+    btnVerify?.addEventListener("click", verifyOtp);
+    btnResend?.addEventListener("click", resendOtp);
 
     function switchTab(tab) {
 
@@ -56,6 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fill.style.background = colors[score - 1] || '#ef4444';
     }
 
+
     async function doLogin() {
 
         const email = document.querySelector('#panel-login input[type=text]').value.trim();
@@ -73,6 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const btn = document.querySelector('#panel-login .auth-btn.primary');
         btn.disabled = true;
         btn.textContent = '⏳ Đang xử lý...';
+
 
         try {
             const res = await fetch('/account/login', {
@@ -128,6 +134,63 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
 
+    async function doRegister() {
+        const email = document.getElementById('reg-email').value.trim();
+        const password = document.getElementById('pw-reg').value;
+        const terms = document.getElementById('reg-terms').checked;
+        const btnr = document.getElementById('btn-resend');
+
+        if (!email || !password)
+            return showToast('Thiếu thông tin', 'warn');
+
+        if (!email.endsWith('@gmail.com')) {
+            showToast('Email phải có đuôi @gmail.com', 'warn');
+            return;
+        }
+
+        if (password.length < 6)
+            return showToast('Mật khẩu có ít nhất 6 ký tự', 'warn');
+
+        if (!terms)
+            return showToast('Chưa đồng ý điều khoản', 'warn');
+
+        const btn = document.querySelector('#register-step-1 .auth-btn.primary');
+        btn.disabled = true;
+        btn.textContent = 'Đang gửi OTP...';
+
+        try {
+            const res = await fetch('/account/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ email, password })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message);
+
+            document.getElementById('otp-hint').textContent = `OTP đã gửi tới ${email}`;
+            document.getElementById('register-step-1').style.display = 'none';
+            document.getElementById('register-step-2').style.display = '';
+
+            showToast('Đã gửi OTP', 'ok');
+            startOtpCountdown(60,btnr)
+
+        } catch (err) {
+            showToast(err.message, 'warn');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Tạo tài khoản';
+        }
+    }
+
+
+    function clearOtpBoxes() {
+        ['otp-box-1', 'otp-box-2', 'otp-box-3', 'otp-box-4', 'otp-box-5', 'otp-box-6'].forEach(id => {
+            const el = document.getElementById(id);
+            if (el) { el.value = ''; el.classList.remove('otp-filled'); }
+        });
+    }
+
     function otpMove(input, prevId, nextId) {
         const val = input.value.replace(/\D/g, '');
         input.value = val;
@@ -148,6 +211,86 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
+    async function verifyOtp() {
+        const otp = ['otp-box-1', 'otp-box-2', 'otp-box-3', 'otp-box-4', 'otp-box-5', 'otp-box-6']
+            .map(id => document.getElementById(id).value)
+            .join('');
+
+        const email = document.getElementById('reg-email').value.trim();
+
+        if (otp.length < 6) {
+            showToast('Vui lòng nhập đủ 6 chữ số OTP.', 'warn');
+            return;
+        }
+
+        const btn = document.querySelector('#register-step-2 .auth-btn.primary');
+        btn.disabled = true;
+        btn.textContent = '⏳ Đang xác nhận...';
+
+        try {
+
+            let res = await fetch('/account/verify', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ email, otp })
+            });
+
+            let data = await res.json();
+            if (!res.ok) throw new Error(data.message);
+
+
+            res = await fetch('/account/register', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ email })
+            });
+
+            data = await res.json();
+            if (!res.ok) throw new Error(data.message);
+
+            showToast('Đăng ký thành công', 'ok');
+            setTimeout(() => switchTab('login'), 1000);
+
+        } catch (err) {
+            showToast(err.message, 'warn');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Xác nhận';
+        }
+    }
+
+    async function resendOtp() {
+        const email = document.getElementById('reg-email').value.trim();
+        const password = document.getElementById('pw-reg').value;
+        const btn = document.getElementById('btn-resend');
+
+        btn.disabled = true;
+        btn.textContent = 'Đang gửi...';
+
+        try {
+            const res = await fetch('/account/send', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: new URLSearchParams({ email, password })
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error(data.message);
+
+            clearOtpBoxes();
+            document.getElementById('otp-box-1').focus();
+
+            showToast('Đã gửi lại OTP', 'ok');
+
+            startOtpCountdown(60, btn);
+
+        } catch (err) {
+            showToast(err.message, 'warn');
+            btn.disabled = false;
+            btn.textContent = 'Gửi lại OTP';
+        }
+    }
+
     function startOtpCountdown(seconds, btn) {
         clearInterval(otpTimer);
 
@@ -157,6 +300,7 @@ document.addEventListener("DOMContentLoaded", () => {
             otpTimeLeft--;
 
             btn.textContent = `Gửi lại sau ${otpTimeLeft}s`;
+            btn.disabled = true;
 
             if (otpTimeLeft <= 0) {
                 clearInterval(otpTimer);
@@ -187,11 +331,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("pw-reg")
         ?.addEventListener("input", (e) => checkPwStrength(e.target));
-
-
-    btnLogin?.addEventListener("click", doLogin);
-
-
 
     otpIds.forEach((id, index) => {
         const input = document.getElementById(id);
