@@ -14,6 +14,7 @@
         <!-- LEFT PANEL -->
         <div class="auth-left">
             <div class="auth-left-inner">
+
                 <a class="auth-logo" href="#">
                     <div class="auth-logo-icon">💰</div>
                     <div>
@@ -72,19 +73,18 @@
                         <div class="auth-stat-lbl">Đánh giá</div>
                     </div>
                 </div>
+
             </div>
         </div>
 
         <!-- RIGHT PANEL -->
         <div class="auth-right">
 
-            <!-- Tab switcher -->
             <div class="auth-tabs">
                 <button class="auth-tab active" id="tab-login">🔒 Đăng nhập</button>
                 <button class="auth-tab" id="tab-register">✨ Đăng ký</button>
             </div>
 
-            <!-- FORMS CONTAINER -->
             <div class="auth-forms-wrap">
 
                 <!-- LOGIN FORM -->
@@ -111,7 +111,6 @@
                 <!-- REGISTER FORM -->
                 <div class="auth-form-panel" id="panel-register">
 
-                   
                     <div id="register-step-1">
                         <div class="auth-form-head">
                             <h2>Tạo tài khoản mới ✨</h2>
@@ -127,16 +126,18 @@
                                 <input type="password" id="pw-reg" placeholder="Tối thiểu 8 ký tự">
                                 <button class="auth-pw-eye" data-target="pw-reg">👁</button>
                             </div>
-                            <div class="pw-strength-bar"><div class="pw-strength-fill" id="pw-strength-fill"></div></div>
+                            <div class="pw-strength-bar">
+                                <div class="pw-strength-fill" id="pw-strength-fill"></div>
+                            </div>
                         </div>
                         <label class="auth-check" style="font-size:11px;margin-bottom:10px">
-                            <input type="checkbox" id="reg-terms"> Tôi đồng ý với <a href="#" style="color:#6366f1">Điều khoản dịch vụ</a> và <a href="#" style="color:#6366f1">Chính sách riêng tư</a>
+                            <input type="checkbox" id="reg-terms">
+                            Tôi đồng ý với <a href="#" style="color:#6366f1">Điều khoản dịch vụ</a> và <a href="#" style="color:#6366f1">Chính sách riêng tư</a>
                         </label>
-                        <button class="auth-btn primary" id="btn-register"> Tạo tài khoản</button>
+                        <button class="auth-btn primary" id="btn-register">Tạo tài khoản</button>
                         <p class="auth-switch">Đã có tài khoản? <button class="auth-link-btn" id="go-login">Đăng nhập →</button></p>
                     </div>
 
-                    
                     <div id="register-step-2" style="display:none">
                         <div class="auth-form-head">
                             <h2>Xác nhận email 📧</h2>

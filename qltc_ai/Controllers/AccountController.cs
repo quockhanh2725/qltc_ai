@@ -47,7 +47,7 @@ namespace qltc_ai.Controllers
             var ok = _authService.VerifyOtp(email, otp);
 
             if (!ok)
-                return BadRequest(new { message = "otp sai hoac het han" });
+                return BadRequest(new { message = "OTP sai hoặc hết hạn" });
 
             return Ok(new { message = "otp dung" });
         }
