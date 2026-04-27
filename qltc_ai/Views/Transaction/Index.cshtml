@@ -1,10 +1,189 @@
 ﻿@{
-    ViewData["Title"] = "Ngân Sách";
+    ViewData["Title"] = "Giao Dịch";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <!DOCTYPE html>
 <html>
+<head>
+    <link rel="stylesheet" href="~/user/css/transaction.css" asp-append-version="true">
+</head>
 <body>
-    <h2>transaction</h2>
+    <div class="main">
+        <div class="topbar">
+            <div>
+                <div class="topbar-title" id="topbarTitle">Thêm giao dịch</div>
+                <div class="topbar-sub" id="topbarSub">AI tự nhận diện · Nhập tự nhiên</div>
+            </div>
+            <div class="topbar-r">
+                <a href="history.html" class="t-btn outline">📋 Lịch sử</a>
+                <div class="notif-btn">🔔</div>
+                <button class="t-btn primary" id="btnOpenAdvisor">🤖 Hỏi AI</button>
+            </div>
+        </div>
+
+        <div class="page-body" style="flex-direction:column;padding:18px 20px;gap:0">
+
+            <!-- TAB SWITCHER -->
+            <div class="form-tabs" id="formTabs">
+                <button class="form-tab active-exp" data-tab="expense">✏️ Nhập chi tiêu</button>
+                <button class="form-tab" data-tab="budget">🎯 Nhập ngân sách</button>
+            </div>
+
+            <!-- AI natural input -->
+            <div class="ai-box" id="aiBox" style="cursor:pointer;transition:box-shadow .2s">
+                <div class="ai-box-title">
+                    ✨ NHẬP TỰ NHIÊN — AI TỰ HIỂU
+                    <span style="float:right;font-size:11px;background:rgba(99,102,241,.15);color:var(--indigo);padding:2px 8px;border-radius:20px;font-weight:600">💬 Mở chat</span>
+                </div>
+                <div class="ai-result" id="aiResult" style="display:none">
+                    <div style="font-size:20px">✅</div>
+                    <div class="ai-result-info">
+                        <div class="ai-result-lbl">AI nhận diện được</div>
+                        <div class="ai-result-val" id="aiResultTxt"></div>
+                    </div>
+                    <div style="text-align:right">
+                        <div class="ai-result-amt" id="aiResultAmt"></div>
+                        <div id="aiConf" style="font-size:10px;font-weight:700;margin-top:2px"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: CHI TIÊU -->
+            <div id="panelExpense" class="exp-layout" style="margin-top:14px">
+                <div class="exp-left">
+
+                    <!-- Số tiền -->
+                    <div class="card" style="padding:14px 16px">
+                        <div class="f-lbl" style="margin-bottom:8px">SỐ TIỀN</div>
+                        <div class="amt-wrap">
+                            <span class="amt-cur">VNĐ</span>
+                            <div class="amt-div"></div>
+                            <input class="amt-inp" id="fAmt" placeholder="0" inputmode="numeric">
+                        </div>
+                        <div class="bud-bar-wrap" id="budWrap" style="display:none">
+                            <div class="bud-bar-track">
+                                <div class="bud-bar-fill" id="budFill" style="width:0%"></div>
+                            </div>
+                            <div class="bud-bar-lbl">
+                                <span id="budLeft"></span>
+                                <span id="budPct"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Nội dung + danh mục -->
+                    <div class="card" style="padding:14px 16px">
+                        <div class="row2" style="margin-bottom:12px">
+                            <div class="f-grp">
+                                <div class="f-lbl">NỘI DUNG</div>
+                                <input class="f-inp" id="fName" placeholder="Mô tả giao dịch...">
+                            </div>
+                        </div>
+                        <div class="f-lbl" style="margin-bottom:8px">DANH MỤC</div>
+                        <div class="cat-grid" id="catGrid">
+                            <div class="cat-chip on" data-cat="Ăn uống" data-bud="4200000" data-sp="3696000">
+                                <div class="cat-chip-ico">🍜</div>
+                                <div class="cat-chip-lbl">Ăn uống</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Lưu / đặt lại -->
+                    <div class="card" style="padding:14px 16px">
+                        <div class="save-row">
+                            <button class="save-btn pri" id="btnSaveTx">💾 Lưu giao dịch</button>
+                            <button class="save-btn sec" id="btnResetTx">↺ Đặt lại</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exp-right">
+
+                    <!-- Nhập nhanh -->
+                    <div class="card" style="padding:14px 16px">
+                        <div class="card-title" style="margin-bottom:10px">⚡ Nhập nhanh</div>
+                        <div style="display:flex;flex-direction:column;gap:6px" id="quickList">
+                            <button class="quick-chip" data-name="Ăn phở sáng" data-amt="50000" data-cat="Ăn uống">🍜 Phở sáng — 50k</button>
+                            <button class="quick-chip" data-name="Grab đi làm" data-amt="45000" data-cat="Đi lại">🚗 Grab đi làm — 45k</button>
+                            <button class="quick-chip" data-name="Cà phê văn phòng" data-amt="35000" data-cat="Ăn uống">☕ Cà phê — 35k</button>
+                            <button class="quick-chip" data-name="Bún bò" data-amt="45000" data-cat="Ăn uống">🍜 Bún bò — 45k</button>
+                            <button class="quick-chip" data-name="Tiền điện" data-amt="5000000" data-cat="Nhà ở">🏠 Tiền điện — 5tr</button>
+                            <button class="quick-chip" data-name="Netflix" data-amt="180000" data-cat="Giải trí">🎮 Netflix — 180k</button>
+                        </div>
+                    </div>
+
+                    <!-- Ngân sách tháng -->
+                    <div class="card" style="padding:14px 16px">
+                        <div class="card-title" style="margin-bottom:10px">🎯 Ngân sách tháng</div>
+                        <div class="cat-bar-item">
+                            <div class="cat-bar-head">
+                                <span class="cat-bar-nm">🍜 Ăn uống</span>
+                                <span class="cat-bar-amt" style="color:var(--red)">3,7tr/4,2tr</span>
+                            </div>
+                            <div class="cat-bar-track">
+                                <div class="cat-bar-fill" style="width:88%;background:var(--red)"></div>
+                            </div>
+                        </div>
+                        <a href="budget.html" style="display:block;margin-top:10px;font-size:11.5px;color:var(--indigo);font-weight:600;text-align:center">
+                            Xem chi tiết ngân sách →
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL: NGÂN SÁCH -->
+            <div id="panelBudget" class="exp-layout" style="margin-top:14px;display:none">
+                <div class="exp-left">
+
+                    <!-- Số tiền ngân sách -->
+                    <div class="card" style="padding:14px 16px">
+                        <div class="f-lbl" style="margin-bottom:8px">NHẬP SỐ TIỀN NGÂN SÁCH</div>
+                        <div class="amt-wrap sky">
+                            <span class="amt-cur">VNĐ</span>
+                            <div class="amt-div"></div>
+                            <input class="amt-inp sky" id="bAmt" placeholder="0" inputmode="numeric">
+                        </div>
+                    </div>
+
+                    <!-- Lưu / đặt lại -->
+                    <div class="card" style="padding:14px 16px">
+                        <div class="save-row">
+                            <button class="save-btn pri" id="btnSaveBud" style="background:linear-gradient(135deg,#0ea5e9,#38bdf8);box-shadow:0 4px 16px rgba(14,165,233,.3)">💾 Lưu ngân sách</button>
+                            <button class="save-btn sec" id="btnResetBud">↺ Đặt lại</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="exp-right">
+
+                    <!-- Tổng quan tháng -->
+                    <div class="card" style="padding:14px 16px">
+                        <div class="card-title" id="budgetTitle" style="margin-bottom:10px">📊 Tháng 3/2026</div>
+                        <div class="bud-info-grid">
+                            <div class="bud-info-card">
+                                <div class="bud-info-lbl">Thu nhập</div>
+                                <div class="bud-info-val c-green" id="bud-thu-nhap">15.000.000đ</div>
+                            </div>
+                            <div class="bud-info-card">
+                                <div class="bud-info-lbl">Đã chi tiêu</div>
+                                <div class="bud-info-val c-red" id="bud-da-chi">9.240.000đ</div>
+                            </div>
+                            <div class="bud-info-card">
+                                <div class="bud-info-lbl">Còn lại</div>
+                                <div class="bud-info-val" id="bud-con-lai" style="color:#0ea5e9">5.760.000đ</div>
+                            </div>
+                            <div class="bud-info-card">
+                                <div class="bud-info-lbl">Tiết kiệm</div>
+                                <div class="bud-info-val c-green" id="bud-tiet-kiem">38.4%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="~/user/js/transaction.js" asp-append-version="true"></script>
 </body>
 </html>
