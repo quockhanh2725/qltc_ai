@@ -1,6 +1,5 @@
 ﻿using qltc_ai.Models;
 using qltc_ai.Repositories;
-using System.Text;
 
 namespace qltc_ai.Service.Base
 {
@@ -10,53 +9,109 @@ namespace qltc_ai.Service.Base
         private readonly IBudgetRepository _budgetRepo;
         private readonly ITransactionRepository _transactionRepo;
         private readonly ICategoryService _categoryService;
-        public TransactionService(ICategoryRepository categoryRepo, IBudgetRepository budgetRepo, ITransactionRepository transactionRepo, ICategoryService categoryService)
+
+        public TransactionService(
+            ICategoryRepository categoryRepo,
+            IBudgetRepository budgetRepo,
+            ITransactionRepository transactionRepo,
+            ICategoryService categoryService)
         {
             _categoryRepo = categoryRepo;
             _budgetRepo = budgetRepo;
             _transactionRepo = transactionRepo;
             _categoryService = categoryService;
         }
-        public bool AddTransaction(int accid, int idCate, decimal money, string note)
+
+        public List<Giaodich> GetByAccount(int accId)
         {
+            return _transactionRepo.GetByAccount(accId);
+        }
+
+        public List<Giaodich> GetByAccountAndMonth(int accId, int month, int year)
+        {
+            return _transactionRepo.GetByAccountAndMonth(accId, month, year);
+        }
+
+        public bool AddTransaction(int accId, int idDetail, decimal money, string note, string typeTran)
+        {
+            if (money <= 0)
+                return false;
+
+            var chiTiet = _categoryRepo.FindById(idDetail);
+            if (chiTiet == null)
+                return false;
+
+            var budget = _budgetRepo.FindById(chiTiet.IdNganSach ?? 0);
+            if (budget == null || budget.IdTaiKhoan != accId)
+                return false;
+
             var now = DateTime.Now;
-
-            var cate = _categoryRepo.FindById(idCate);
-            if (cate == null)
-                return false;
-
-            
-            var budget = _budgetRepo.FindById(cate.IdNganSach);
-            if (budget == null)
-                return false;
-
-            if (budget.IdTaiKhoan != accid)
-                return false;
-
             if (budget.Thang?.Month != now.Month || budget.Thang?.Year != now.Year)
                 return false;
 
-            decimal daTieu = cate.TienDaTieu ?? 0;
-            decimal gioiHan = cate.GioiHanTien ?? 0;
+            
+            if (typeTran == "ChiTieu")
+            {
+                decimal daTieu = chiTiet.TienDaTieu ?? 0;
+                decimal gioiHan = chiTiet.GioiHanTien ?? 0;
 
-            if (daTieu + money > gioiHan)
-                return false;
+                if (gioiHan > 0 && daTieu + money > gioiHan)
+                    return false;
+
+                chiTiet.TienDaTieu = daTieu + money;
+                _categoryService.Rating(chiTiet);
+                _categoryRepo.UpdateCategory(chiTiet);
+            }
 
             var gd = new Giaodich
             {
-                IdTaiKhoan = accid,
-                IdDanhMuc = idCate,
+                IdTaiKhoan = accId,
+                IdChiTiet = idDetail,
                 Tien = money,
                 NoiDung = note,
+                LoaiGiaoDich = typeTran,
                 NgayGiaoDich = now
             };
 
             _transactionRepo.AddTransaction(gd);
+            _transactionRepo.Save();
+            _categoryRepo.Save();
 
-            cate.TienDaTieu = (cate.TienDaTieu ?? 0) + money;
-            _categoryRepo.UpdateCategory(cate);
-            _categoryService.Rating(cate);
+            return true;
+        }
 
+        public bool UpdateTransaction(int accId, int idTran, decimal newMoney, string newNote)
+        {
+            if (newMoney <= 0)
+                return false;
+
+            var tran = _transactionRepo.FindById(idTran);
+            if (tran == null || tran.IdTaiKhoan != accId)
+                return false;
+
+            var chiTiet = _categoryRepo.FindById(tran.IdChiTiet ?? 0);
+            if (chiTiet == null)
+                return false;
+
+           
+            if (tran.LoaiGiaoDich == "ChiTieu")
+            {
+                decimal diff = newMoney - (tran.Tien ?? 0);
+                decimal newDaTieu = (chiTiet.TienDaTieu ?? 0) + diff;
+                decimal gioiHan = chiTiet.GioiHanTien ?? 0;
+
+                if (gioiHan > 0 && newDaTieu > gioiHan)
+                    return false;
+
+                chiTiet.TienDaTieu = newDaTieu;
+                _categoryService.Rating(chiTiet);
+                _categoryRepo.UpdateCategory(chiTiet);
+            }
+
+            tran.Tien = newMoney;
+            tran.NoiDung = newNote;
+
+            _transactionRepo.Update(tran);
             _transactionRepo.Save();
             _categoryRepo.Save();
 
@@ -66,56 +121,26 @@ namespace qltc_ai.Service.Base
         public bool DeleteTransaction(int idTran)
         {
             var tran = _transactionRepo.FindById(idTran);
-            if (tran == null )
+            if (tran == null)
                 return false;
-
-            var cate = _categoryRepo.FindById(tran.IdDanhMuc.Value);
-            if (cate == null)
-                return false;
-
-            cate.TienDaTieu = (cate.TienDaTieu ?? 0) - tran.Tien;
-
-            _categoryRepo.UpdateCategory(cate);
-            _transactionRepo.DeleteTransaction(tran);
-            _categoryService.Rating(cate);
-
-            _categoryRepo.Save();
-            _transactionRepo.Save();
-
-            return true;
-        }
-
-        public bool UpdateTransaction(int accid , int idTran , decimal newMoney , string newNote)
-        {
-            var tran = _transactionRepo.FindById(idTran);
-            if (tran == null || tran.IdTaiKhoan != accid)
-            return false;
-
-            var cate = _categoryRepo.FindById(tran.IdDanhMuc.Value);
-            if(cate == null)
-            return false;
-
-            var diff = newMoney - tran.Tien;
-
-            if ((cate.TienDaTieu ?? 0) + diff > cate.GioiHanTien)
-            return false;
-
-            cate.TienDaTieu = (cate.TienDaTieu ?? 0) + diff;
-
-            tran.Tien = newMoney;
-            tran.NoiDung = newNote;
 
             
-            _categoryRepo.UpdateCategory(cate);
-            _transactionRepo.Update(tran);
-            _categoryService.Rating(cate);
+            if (tran.LoaiGiaoDich == "ChiTieu" && tran.IdChiTiet.HasValue)
+            {
+                var chiTiet = _categoryRepo.FindById(tran.IdChiTiet.Value);
+                if (chiTiet != null)
+                {
+                    chiTiet.TienDaTieu = Math.Max(0, (chiTiet.TienDaTieu ?? 0) - (tran.Tien ?? 0));
+                    _categoryService.Rating(chiTiet);
+                    _categoryRepo.UpdateCategory(chiTiet);
+                    _categoryRepo.Save();
+                }
+            }
 
-            _categoryRepo.Save();
+            _transactionRepo.DeleteTransaction(tran);
             _transactionRepo.Save();
 
             return true;
-
         }
-
     }
 }

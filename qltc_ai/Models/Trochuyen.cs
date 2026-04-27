@@ -9,6 +9,8 @@ public partial class Trochuyen
 
     public int? IdTaiKhoan { get; set; }
 
+    public string? TrangThai { get; set; }
+
     public DateTime? NgayTao { get; set; }
 
     public virtual Taikhoan? IdTaiKhoanNavigation { get; set; }

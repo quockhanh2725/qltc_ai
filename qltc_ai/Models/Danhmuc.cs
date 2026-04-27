@@ -7,18 +7,11 @@ public partial class Danhmuc
 {
     public int IdDanhMuc { get; set; }
 
-    public int IdNganSach { get; set; }
-
     public string? TenDanhMuc { get; set; }
 
-    public string? Mau { get; set; }
+    public string? Mau { get; set; } 
 
-    public decimal? GioiHanTien { get; set; }
+    public string? LoaiDanhMuc { get; set; } 
 
-    public decimal? TienDaTieu { get; set; }
-
-    public string? DanhGia { get; set; }
-
-    public virtual ICollection<Giaodich> Giaodich { get; set; } = new List<Giaodich>();
-    public virtual Ngansach IdNganSachNavigation { get; set; } = null!;
+    public virtual ICollection<ChiTietDanhMuc> ChiTietDanhMuc { get; set; } = new List<ChiTietDanhMuc>();
 }

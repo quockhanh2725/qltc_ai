@@ -20,7 +20,7 @@ namespace qltc_ai.Controllers
         [HttpGet("by-budget")]
         public IActionResult GetByBudget(int budgetId)
         {
-            var list = _cateService.GetAllCatrgory(budgetId);
+            var list = _cateService.GetCategoriesByBudget(budgetId);
             return Ok(list);
         }
         [HttpPut("ulimit")]

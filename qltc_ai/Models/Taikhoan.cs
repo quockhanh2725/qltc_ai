@@ -19,6 +19,8 @@ public partial class Taikhoan
 
     public virtual ICollection<AiLog> AiLog { get; set; } = new List<AiLog>();
 
+    public virtual ICollection<AiPhanTich> AiPhanTich { get; set; } = new List<AiPhanTich>();
+
     public virtual ICollection<Giaodich> Giaodich { get; set; } = new List<Giaodich>();
 
     public virtual ICollection<Muctieu> Muctieu { get; set; } = new List<Muctieu>();

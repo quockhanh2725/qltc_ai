@@ -14,5 +14,6 @@ public partial class Ngansach
     public DateTime? Thang { get; set; }
 
     public virtual Taikhoan? IdTaiKhoanNavigation { get; set; }
-    public virtual ICollection<Danhmuc> Danhmuc { get; set; } = null!;
+
+    public virtual ICollection<ChiTietDanhMuc> ChiTietDanhMuc { get; set; } = new List<ChiTietDanhMuc>();
 }
