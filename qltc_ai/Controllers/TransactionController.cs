@@ -18,11 +18,11 @@ namespace qltc_ai.Controllers
             return View();
         }
         [HttpPost("add")]
-        public IActionResult Add(int idCate, decimal money, string note , string typeTran)
+        public IActionResult Add(int idDetail, decimal money, string note , string typeTran)
         {
             var accId = HttpContext.Session.GetInt32("AccountId");
 
-            var ok = _tranService.AddTransaction(accId.Value, idCate, money, note , typeTran);
+            var ok = _tranService.AddTransaction(accId.Value, idDetail, money, note , typeTran);
 
             if (ok)
                 return Ok(new { message = "them thanh cong" });

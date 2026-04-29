@@ -1,1 +1,185 @@
 ﻿
+.form-tabs {
+    display: flex;
+    gap: 4px;
+    padding: 4px;
+    margin-bottom: 2px;
+    background: var(--surf);
+    border: 1.5px solid var(--border);
+    border-radius: 12px;
+}
+
+div#formTabs {
+    margin-bottom: 15px;
+}
+
+.form-tab {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 9px;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--text3);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+    .form-tab.active-exp {
+        background: linear-gradient(135deg, var(--indigo), #6366f1);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+    }
+
+    .form-tab.active-bud {
+        background: linear-gradient(135deg, #0ea5e9, #38bdf8);
+        color: #fff;
+        box-shadow: 0 4px 14px rgba(14, 165, 233, 0.3);
+    }
+
+    .form-tab:not(.active-exp):not(.active-bud):hover {
+        background: var(--white);
+        color: var(--text);
+    }
+
+
+.exp-layout {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 14px;
+    flex: 1;
+    min-height: 0;
+}
+
+.exp-left,
+.exp-right {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    overflow-y: auto;
+}
+
+.exp-left {
+    padding-right: 2px;
+}
+
+.amt-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    background: var(--surf);
+    border: 1.5px solid var(--border);
+    border-radius: 11px;
+    transition: border-color 0.2s;
+}
+
+    .amt-wrap:focus-within {
+        border-color: var(--indigo);
+    }
+
+    .amt-wrap.sky:focus-within {
+        border-color: #0ea5e9;
+    }
+
+.amt-cur {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text3);
+}
+
+.amt-div {
+    width: 1px;
+    height: 28px;
+    background: var(--border);
+}
+
+.amt-inp {
+    flex: 1;
+    width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    text-align: right;
+    font-size: 26px;
+    font-weight: 800;
+    font-family: 'Playfair Display', serif;
+    color: var(--red);
+}
+
+    .amt-inp.inc {
+        color: var(--green);
+    }
+
+    .amt-inp.sky {
+        color: #0ea5e9;
+    }
+
+    .amt-inp::placeholder {
+        color: var(--border2);
+    }
+
+
+.bud-bar-wrap {
+    margin-top: 8px;
+}
+
+.bud-bar-track {
+    height: 6px;
+    border-radius: 10px;
+    background: var(--border);
+    overflow: hidden;
+}
+
+.bud-bar-fill {
+    height: 100%;
+    border-radius: 10px;
+    transition: width 0.4s;
+}
+
+.bud-bar-lbl {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 4px;
+    font-size: 10px;
+    color: var(--text3);
+}
+
+.bud-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.bud-info-card {
+    padding: 12px 14px;
+    background: var(--surf);
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+}
+
+.bud-info-lbl {
+    margin-bottom: 4px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text3);
+}
+
+.bud-info-val {
+    font-size: 15px;
+    font-weight: 800;
+    color: var(--text);
+}
+
+.row2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}

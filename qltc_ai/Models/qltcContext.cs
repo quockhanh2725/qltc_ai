@@ -92,7 +92,7 @@ public partial class qltcContext : DbContext
         modelBuilder.Entity<ChiTietDanhMuc>(entity =>
         {
             entity.HasKey(e => e.IdChiTiet).HasName("PRIMARY");
-            entity.ToTable("chitietsanhmuc");
+            entity.ToTable("chitietdanhmuc");
             entity.HasIndex(e => e.IdDanhMuc, "idDanhMuc");
             entity.HasIndex(e => e.IdNganSach, "idNganSach");
 
@@ -107,12 +107,12 @@ public partial class qltcContext : DbContext
 
             entity.HasOne(d => d.IdDanhMucNavigation).WithMany(p => p.ChiTietDanhMuc)
                 .HasForeignKey(d => d.IdDanhMuc)
-                .HasConstraintName("chitietsanhmuc_ibfk_1");
+                .HasConstraintName("chitietdanhmuc_ibfk_1");
 
             entity.HasOne(d => d.IdNganSachNavigation).WithMany(p => p.ChiTietDanhMuc)
                 .HasForeignKey(d => d.IdNganSach)
                 .OnDelete(DeleteBehavior.Cascade)
-                .HasConstraintName("chitietsanhmuc_ibfk_2");
+                .HasConstraintName("chitietdanhmuc_ibfk_2");
         });
 
         

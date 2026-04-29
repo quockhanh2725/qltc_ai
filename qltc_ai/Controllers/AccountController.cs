@@ -66,7 +66,11 @@ namespace qltc_ai.Controllers
                     return BadRequest(new { message = "chua xac thuc otp" });
 
                 case RegisterStatus.Success:
-                    return Ok(result.Data);
+                    {
+                        var acc = result.Data;
+                        _budgetService.AutoAddNewAccount(acc.IdTaiKhoan);
+                        return Ok(result.Data);
+                    }
 
                 default:
                     return BadRequest(new { message = "loi" });
@@ -87,7 +91,7 @@ namespace qltc_ai.Controllers
 
             HttpContext.Session.SetInt32("AccountId", acc.IdTaiKhoan);
 
-            _budgetService.AutoAddNewAccount(acc.IdTaiKhoan);
+           
             _budgetService.AutoResetIfNeeded(acc.IdTaiKhoan);
 
             switch (acc.RoleId)
