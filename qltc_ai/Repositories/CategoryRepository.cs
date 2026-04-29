@@ -1,4 +1,5 @@
-﻿using qltc_ai.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using qltc_ai.Models;
 
 namespace qltc_ai.Repositories
 {
@@ -8,29 +9,49 @@ namespace qltc_ai.Repositories
         {
         }
 
-        public void AddRange(List<Danhmuc> list)
+       
+        public List<Danhmuc> GetAllCateogry()
         {
-            _context.Danhmuc.AddRange(list);
+            return _context.Danhmuc.ToList();
         }
 
-        public List<Danhmuc> GetByBudget(int budgetId)
-        {
-            return _context.Danhmuc.Where(x => x.IdNganSach == budgetId).ToList();
-        }
-
-        public Danhmuc? FindById(int id)
+        public Danhmuc? FindDanhMucById(int id)
         {
             return _context.Danhmuc.Find(id);
+        }
+
+        public List<ChiTietDanhMuc> GetByBudget(int budgetId)
+        {
+            return _context.ChiTietDanhMuc
+                .Where(x => x.IdNganSach == budgetId)
+                .Include(x => x.IdDanhMucNavigation)
+                .ToList();
+        }
+
+        public ChiTietDanhMuc? FindById(int id)
+        {
+            return _context.ChiTietDanhMuc
+                .Include(x => x.IdDanhMucNavigation)
+                .FirstOrDefault(x => x.IdChiTiet == id);
+        }
+
+        public void AddRange(List<ChiTietDanhMuc> list)
+        {
+            _context.ChiTietDanhMuc.AddRange(list);
+        }
+
+        public void UpdateCategory(ChiTietDanhMuc detail)
+        {
+            _context.ChiTietDanhMuc.Update(detail);
+        }
+        public void Add(ChiTietDanhMuc detail)
+        {
+            _context.ChiTietDanhMuc.Add(detail);
         }
 
         public void Save()
         {
             _context.SaveChanges();
-        }
-
-        public void UpdateCategory(Danhmuc cate)
-        {
-            _context.Danhmuc.Update(cate);
         }
     }
 }

@@ -4,10 +4,14 @@ namespace qltc_ai.Repositories
 {
     public interface ICategoryRepository
     {
-        List<Danhmuc> GetByBudget(int budgetId);
-        void AddRange(List<Danhmuc> list);
+        List<Danhmuc> GetAllCateogry();
+        Danhmuc? FindDanhMucById(int id);
+
+        List<ChiTietDanhMuc> GetByBudget(int budgetId);
+        void Add(ChiTietDanhMuc detail);
+        ChiTietDanhMuc? FindById(int id);
+        void AddRange(List<ChiTietDanhMuc> list);
+        void UpdateCategory(ChiTietDanhMuc detail);
         void Save();
-        Danhmuc? FindById(int id);
-        void UpdateCategory(Danhmuc cate);
     }
 }

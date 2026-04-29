@@ -12,4 +12,6 @@ public partial class Nguoidung
     public string? TenNguoiDung { get; set; }
 
     public virtual Taikhoan? IdTaiKhoanNavigation { get; set; }
+
+    public virtual ICollection<ThongKeChiTieu> ThongKeChiTieu { get; set; } = new List<ThongKeChiTieu>();
 }

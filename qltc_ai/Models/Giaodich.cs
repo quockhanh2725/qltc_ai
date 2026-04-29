@@ -9,15 +9,17 @@ public partial class Giaodich
 
     public int? IdTaiKhoan { get; set; }
 
-    public int? IdDanhMuc { get; set; }
+    public int? IdChiTiet { get; set; }
 
     public decimal? Tien { get; set; }
 
     public string? NoiDung { get; set; }
 
+    public string? LoaiGiaoDich { get; set; }
+
     public DateTime? NgayGiaoDich { get; set; }
 
-    public virtual Danhmuc? IdDanhMucNavigation { get; set; }
+    public virtual ChiTietDanhMuc? IdChiTietNavigation { get; set; }
 
     public virtual Taikhoan? IdTaiKhoanNavigation { get; set; }
 }

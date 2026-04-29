@@ -1,6 +1,5 @@
 ﻿using qltc_ai.Models;
 using qltc_ai.Repositories;
-using System.Text;
 
 namespace qltc_ai.Service.Base
 {
@@ -8,74 +7,72 @@ namespace qltc_ai.Service.Base
     {
         private readonly ICategoryRepository _categoryRepo;
         private readonly IBudgetRepository _budgetRepo;
+
         public CategoryService(IBudgetRepository budgetRepo, ICategoryRepository cateRepo)
         {
             _categoryRepo = cateRepo;
             _budgetRepo = budgetRepo;
         }
-        public List<Danhmuc> GetAllCatrgory(int id)
+
+        public List<Danhmuc> GetAllCategory()
         {
-            return _categoryRepo.GetByBudget(id).ToList();
+            return _categoryRepo.GetAllCateogry();
         }
 
-        public (bool success, decimal thieu) UpdateLimit(int accId, int idCate, decimal newLimit)
+        public List<ChiTietDanhMuc> GetCategoriesByBudget(int budgetId)
         {
-            var category = _categoryRepo.FindById(idCate);
-            if (category == null)
+            return _categoryRepo.GetByBudget(budgetId);
+        }
+
+        public (bool success, decimal thieu) UpdateLimit(int accId, int idDetail, decimal newLimit)
+        {
+            var chiTiet = _categoryRepo.FindById(idDetail);
+            if (chiTiet == null)
                 return (false, 0);
 
-            var budget = _budgetRepo.FindById(category.IdNganSach);
-            if (budget == null)
+            var budget = _budgetRepo.FindById(chiTiet.IdNganSach ?? 0);
+            if (budget == null || budget.IdTaiKhoan != accId)
                 return (false, 0);
 
-            if (budget.IdTaiKhoan != accId)
-                return (false, 0);
+            var allCategories = _categoryRepo.GetByBudget(chiTiet.IdNganSach ?? 0);
 
-            var categories = _categoryRepo.GetByBudget(category.IdNganSach);
-
-            decimal tongHienTai = categories.Sum(x => x.GioiHanTien ?? 0);
-            decimal gioiHanCu = category.GioiHanTien ?? 0;
-
+            decimal tongHienTai = allCategories.Sum(x => x.GioiHanTien ?? 0);
+            decimal gioiHanCu = chiTiet.GioiHanTien ?? 0;
             decimal tongMoi = tongHienTai - gioiHanCu + newLimit;
             decimal tongNganSach = budget.TongTien ?? 0;
-
-            decimal daTieu = category.TienDaTieu ?? 0;
+            decimal daTieu = chiTiet.TienDaTieu ?? 0;
 
             if (newLimit < daTieu)
-            {
                 return (false, daTieu - newLimit);
-            }
 
             if (tongMoi > tongNganSach)
-            {
-                decimal thieu = tongMoi - tongNganSach;
-                return (false, thieu);
-            }
+                return (false, tongMoi - tongNganSach);
 
-            category.GioiHanTien = newLimit;
-            Rating(category);
-            _categoryRepo.UpdateCategory(category);
+            chiTiet.GioiHanTien = newLimit;
+            Rating(chiTiet);
+
+            _categoryRepo.UpdateCategory(chiTiet);
             _categoryRepo.Save();
 
             return (true, 0);
         }
 
-        public void Rating(Danhmuc cate)
+        public void Rating(ChiTietDanhMuc detail)
         {
-            if (cate.GioiHanTien <= 0)
+            if (detail.GioiHanTien == null || detail.GioiHanTien <= 0)
             {
-                cate.DanhGia = "khong hop le";
+                detail.DanhGia = "TrungBinh";
                 return;
             }
 
-            var percent = (cate.TienDaTieu ?? 0) / cate.GioiHanTien;
+            var percent = (detail.TienDaTieu ?? 0) / detail.GioiHanTien;
 
             if (percent <= 0.5m)
-                cate.DanhGia = "Tot";
+                detail.DanhGia = "Tot";
             else if (percent <= 0.8m)
-                cate.DanhGia = "TrungBinh";
+                detail.DanhGia = "TrungBinh";
             else
-                cate.DanhGia = "Xau";
+                detail.DanhGia = "Xau";
         }
     }
 }

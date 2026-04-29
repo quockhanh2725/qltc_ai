@@ -4,8 +4,10 @@ namespace qltc_ai.Service.Base
 {
     public interface ICategoryService
     {
-        List<Danhmuc> GetAllCatrgory(int id);
-        (bool success, decimal thieu) UpdateLimit(int accId, int idCate, decimal newLimit);
-        void Rating(Danhmuc category);
+        List<Danhmuc> GetAllCategory();
+        List<ChiTietDanhMuc> GetCategoriesByBudget(int budgetId);
+        (bool success, decimal thieu) UpdateLimit(int accId, int idDetail, decimal newLimit);
+        void Rating(ChiTietDanhMuc detail);
+
     }
 }

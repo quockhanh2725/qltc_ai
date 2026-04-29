@@ -87,6 +87,7 @@ namespace qltc_ai.Controllers
 
             HttpContext.Session.SetInt32("AccountId", acc.IdTaiKhoan);
 
+            _budgetService.AutoAddNewAccount(acc.IdTaiKhoan);
             _budgetService.AutoResetIfNeeded(acc.IdTaiKhoan);
 
             switch (acc.RoleId)
