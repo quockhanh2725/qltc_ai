@@ -24,11 +24,11 @@ namespace qltc_ai.Controllers
             return Ok(list);
         }
         [HttpPut("ulimit")]
-        public IActionResult UpdateLimit(int idCate, decimal newLimit)
+        public IActionResult UpdateLimit(int idDetail, decimal newLimit)
         {
             var accId = HttpContext.Session.GetInt32("AccountId");
 
-            var result = _cateService.UpdateLimit(accId.Value, idCate, newLimit);
+            var result = _cateService.UpdateLimit(accId.Value, idDetail, newLimit);
 
             if (result.success)
                 return Ok(new { message = "cap nhat thanh cong" });

@@ -23,8 +23,8 @@ namespace qltc_ai.Repositories
         public List<ChiTietDanhMuc> GetByBudget(int budgetId)
         {
             return _context.ChiTietDanhMuc
-                .Where(x => x.IdNganSach == budgetId)
                 .Include(x => x.IdDanhMucNavigation)
+                .Where(x => x.IdNganSach == budgetId && x.IdDanhMucNavigation.LoaiDanhMuc != "ThuNhap")
                 .ToList();
         }
 
