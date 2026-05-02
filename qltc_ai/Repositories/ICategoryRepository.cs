@@ -7,7 +7,8 @@ namespace qltc_ai.Repositories
         List<Danhmuc> GetAllCateogry();
         Danhmuc? FindDanhMucById(int id);
 
-        List<ChiTietDanhMuc> GetByBudget(int budgetId);
+        List<ChiTietDanhMuc> GetByBudgetC(int budgetId);
+        ChiTietDanhMuc? GetByBudgetT(int budgetId);
         void Add(ChiTietDanhMuc detail);
         ChiTietDanhMuc? FindById(int id);
         void AddRange(List<ChiTietDanhMuc> list);

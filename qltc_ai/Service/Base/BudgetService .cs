@@ -16,24 +16,7 @@ namespace qltc_ai.Service.Base
             _categoryService = categoryService;
         }
 
-        public bool AddBudget(int accId, decimal money)
-        {
-            if (money <= 0)
-                return false;
-
-            var now = DateTime.Now;
-            AutoResetIfNeeded(accId);
-
-            var ns = _repo.GetByMonth(accId, now.Month, now.Year);
-            if (ns == null)
-                return false;
-
-            ns.TongTien = (ns.TongTien ?? 0) + money;
-            _repo.UpdateBudget(ns);
-            _repo.Save();
-
-            return true;
-        }
+       
 
         public bool ResetMonth(int accId, int month, int year)
         {
@@ -47,7 +30,7 @@ namespace qltc_ai.Service.Base
 
             if (prev != null)
             {
-                var prevCategories = _categoryRepo.GetByBudget(prev.IdNganSach);
+                var prevCategories = _categoryRepo.GetByBudgetC(prev.IdNganSach);
                 decimal totalSpent = prevCategories.Sum(x => x.TienDaTieu ?? 0);
                 newTotal = Math.Max(0, (prev.TongTien ?? 0) - totalSpent);
             }
@@ -65,7 +48,7 @@ namespace qltc_ai.Service.Base
           
             if (prev != null)
             {
-                var oldCategories = _categoryRepo.GetByBudget(prev.IdNganSach);
+                var oldCategories = _categoryRepo.GetByBudgetC(prev.IdNganSach);
 
                 var newCategories = oldCategories.Select(x => new ChiTietDanhMuc
                 {

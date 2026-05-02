@@ -8,9 +8,11 @@ namespace qltc_ai.Controllers
     public class BudgetController : Controller
     {
         private readonly IBudgetService _budgetService;
-        public BudgetController(IBudgetService budgetService)
+        private readonly ITransactionService _tranService;
+        public BudgetController(IBudgetService budgetService , ITransactionService tranService)
         {
             _budgetService = budgetService;
+            _tranService = tranService;
         }
 
         [HttpGet("")]
@@ -19,12 +21,12 @@ namespace qltc_ai.Controllers
             return View();
         }
         [HttpPut("add")]
-        public IActionResult AddMoney(decimal money)
+        public IActionResult AddMoney(decimal money , string note , string typeTran)
         {
 
             var accountId = HttpContext.Session.GetInt32("AccountId");
 
-            bool success = _budgetService.AddBudget(accountId.Value, money);
+            bool success = _tranService.AddTransaction(accountId.Value, 0, money, note, typeTran);
 
             if (success)
                 return Ok("OK");

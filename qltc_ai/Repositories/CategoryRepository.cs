@@ -20,7 +20,7 @@ namespace qltc_ai.Repositories
             return _context.Danhmuc.Find(id);
         }
 
-        public List<ChiTietDanhMuc> GetByBudget(int budgetId)
+        public List<ChiTietDanhMuc> GetByBudgetC(int budgetId)
         {
             return _context.ChiTietDanhMuc
                 .Include(x => x.IdDanhMucNavigation)
@@ -52,6 +52,13 @@ namespace qltc_ai.Repositories
         public void Save()
         {
             _context.SaveChanges();
+        }
+
+        public ChiTietDanhMuc? GetByBudgetT(int budgetId)
+        {
+            return _context.ChiTietDanhMuc
+                 .Include(x => x.IdDanhMucNavigation)
+                 .FirstOrDefault(x => x.IdNganSach == budgetId && x.IdDanhMucNavigation.LoaiDanhMuc == "ThuNhap");
         }
     }
 }
