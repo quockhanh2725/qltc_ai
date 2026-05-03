@@ -21,7 +21,7 @@ namespace qltc_ai.Service.Base
 
         public List<ChiTietDanhMuc> GetCategoriesByBudget(int budgetId)
         {
-            return _categoryRepo.GetByBudget(budgetId);
+            return _categoryRepo.GetByBudgetC(budgetId);
         }
 
         public (bool success, decimal thieu) UpdateLimit(int accId, int idDetail, decimal newLimit)
@@ -34,7 +34,10 @@ namespace qltc_ai.Service.Base
             if (budget == null || budget.IdTaiKhoan != accId)
                 return (false, 0);
 
-            var allCategories = _categoryRepo.GetByBudget(chiTiet.IdNganSach ?? 0);
+            if (chiTiet.IdDanhMucNavigation.LoaiDanhMuc == "ThuNhap")
+                return(true, 0);
+
+            var allCategories = _categoryRepo.GetByBudgetC(chiTiet.IdNganSach ?? 0);
 
             decimal tongHienTai = allCategories.Sum(x => x.GioiHanTien ?? 0);
             decimal gioiHanCu = chiTiet.GioiHanTien ?? 0;

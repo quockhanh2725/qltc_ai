@@ -36,37 +36,69 @@ namespace qltc_ai.Service.Base
         {
             if (money <= 0)
                 return false;
-
-            var chiTiet = _categoryRepo.FindById(idDetail);
-            if (chiTiet == null)
-                return false;
-
-            var budget = _budgetRepo.FindById(chiTiet.IdNganSach ?? 0);
-            if (budget == null || budget.IdTaiKhoan != accId)
-                return false;
-
             var now = DateTime.Now;
-            if (budget.Thang?.Month != now.Month || budget.Thang?.Year != now.Year)
+            ChiTietDanhMuc? detail;
+            Ngansach? budget;
+
+            if (typeTran == "ThuNhap")
+            {
+                
+                budget = _budgetRepo.GetByMonth(accId, now.Month, now.Year);
+                if (budget == null)
+                    return false;
+
+               
+                detail = _categoryRepo.GetByBudgetT(budget.IdNganSach);
+                if (detail == null)
+                    return false;
+            }
+            else
+            {
+                
+                detail = _categoryRepo.FindById(idDetail);
+                if (detail == null)
+                    return false;
+
+                budget = _budgetRepo.FindById(detail.IdNganSach ?? 0);
+                if (budget == null || budget.IdTaiKhoan != accId)
+                    return false;
+
+                if (budget.Thang?.Month != now.Month || budget.Thang?.Year != now.Year)
+                    return false;
+            }
+
+            var cate = detail.IdDanhMucNavigation;
+            if (cate == null)
+                return false;
+
+            if(typeTran != cate.LoaiDanhMuc)
                 return false;
 
             
-            if (typeTran == "ChiTieu")
+            if (cate.LoaiDanhMuc == "ChiTieu")
             {
-                decimal daTieu = chiTiet.TienDaTieu ?? 0;
-                decimal gioiHan = chiTiet.GioiHanTien ?? 0;
+                decimal daTieu = detail.TienDaTieu ?? 0;
+                decimal gioiHan = detail.GioiHanTien ?? 0;
 
                 if (gioiHan > 0 && daTieu + money > gioiHan)
                     return false;
 
-                chiTiet.TienDaTieu = daTieu + money;
-                _categoryService.Rating(chiTiet);
-                _categoryRepo.UpdateCategory(chiTiet);
+                detail.TienDaTieu = daTieu + money;
+                
+               
             }
+            else if(cate.LoaiDanhMuc == "ThuNhap")
+            {
+                budget.TongTien = (budget.TongTien ?? 0) + money;
+                detail.TienDaTieu = (detail.TienDaTieu ?? 0) + money;
+            }
+
+            _categoryService.Rating(detail);
 
             var gd = new Giaodich
             {
                 IdTaiKhoan = accId,
-                IdChiTiet = idDetail,
+                IdChiTiet = detail.IdChiTiet,
                 Tien = money,
                 NoiDung = note,
                 LoaiGiaoDich = typeTran,
@@ -74,6 +106,10 @@ namespace qltc_ai.Service.Base
             };
 
             _transactionRepo.AddTransaction(gd);
+
+            _categoryRepo.UpdateCategory(detail);
+            _budgetRepo.UpdateBudget(budget);
+
             _transactionRepo.Save();
             _categoryRepo.Save();
 
