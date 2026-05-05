@@ -9,6 +9,21 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const $ = id => document.getElementById(id);
     const $$ = sel => document.querySelectorAll(sel);
+    const CAT_ICON = {
+        1: '🍜',
+        2: '🚗',
+        3: '🏠',
+        4: '🎮',
+        5: '📚',
+        6: '💊',
+        7: '🛍',
+        8: '➕'
+    };
+
+    async function safeJson(res) {
+        const text = await res.text();
+        try { return JSON.parse(text); } catch { return { message: text }; }
+    }
 
     function switchTab(tab) {
         curTab = tab;
@@ -64,9 +79,117 @@ document.addEventListener("DOMContentLoaded", async () => {
         }, 3000);
     }
 
+    async function loadCurrentBudget() {
+        try {
+            const res = await fetch('/budget/current');
+            const data = await safeJson(res);
+            if (!res.ok) throw new Error(data.message || "Lỗi budget");
+            currentBudgetId = data.idNganSach || data.id;
+            currentIncome = data.tongTien || 0;
+            currentBudgetDate = data.thang || data.date;
+        } catch (err) {
+            console.error(err);
+            showToast(err.message, 'warn');
+        }
+    }
+
+    async function loadAll() {
+        try {
+            await loadCurrentBudget();
+            if (!currentBudgetId) return;
+
+            const res = await fetch(`/category/by-budget?budgetId=${currentBudgetId}`);
+            const data = await safeJson(res);
+            if (!res.ok) throw new Error(data.message || "Lỗi category");
+
+            renderCategories(data);
+            renderBudgetBars(data);
+            //renderBudgetOverview(data);
+
+        } catch (err) {
+            console.error(err);
+            showToast(err.message, 'warn');
+        }
+    }
+
+    function resetFormB() {
+        document.getElementById('bAmt').value = '';
+    }
+
+
+    function renderCategories(list) {
+        const grid = $('catGrid');
+        if (!grid) return;
+
+        grid.innerHTML = '';
+
+        list.forEach((c, index) => {
+            const div = document.createElement('div');
+            div.className = 'cat-chip' + (index === 0 ? ' on' : '');
+            div.dataset.cat = c.idDanhMuc;
+            div.dataset.id = c.idChiTiet;
+            div.innerHTML = `
+                <div class="cat-chip-ico">${CAT_ICON[c.idDanhMuc] || '🧾'}</div>
+                <div class="cat-chip-lbl">${c.idDanhMucNavigation.tenDanhMuc}</div>
+            `;
+            div.addEventListener('click', () => {
+                $$('.cat-chip').forEach(x => x.classList.remove('on'));
+                div.classList.add('on');
+            });
+            grid.appendChild(div);
+        });
+    }
+
+    function renderBudgetBars(list) {
+        const box = document.querySelector('.exp-right .card:nth-child(2)');
+        if (!box) return;
+
+        box.querySelectorAll('.cat-bar-item').forEach(x => x.remove());
+
+        const fmt = n => {
+            if (n >= 1_000_000) {
+                const tr = Math.floor(n / 1_000_000);
+                const du = Math.floor((n % 1_000_000) / 100_000);
+                return du > 0 ? `${tr}tr${du}` : `${tr}tr`;
+            }
+
+            if (n >= 1000) {
+                const k = Math.floor(n / 1000);
+                const du = Math.floor((n % 1000) / 100);
+                return du > 0 ? `${k}k${du}` : `${k}k`;
+            }
+
+            return n;
+        };
+
+        list.forEach(c => {
+            const spent = c.tienDaTieu || 0;
+            const limit = c.gioiHanTien || 0;
+            const percent = limit > 0 ? Math.min((spent / limit) * 100, 100) : 0;
+
+            let color = 'var(--green-l)';
+            if (percent > 80) color = 'var(--red)';
+            else if (percent > 50) color = 'var(--amber)';
+
+            const div = document.createElement('div');
+            div.className = 'cat-bar-item';
+            div.innerHTML = `
+                <div class="cat-bar-head">
+                    <span class="cat-bar-nm">${CAT_ICON[c.idDanhMuc] || '🧾'} ${c.idDanhMucNavigation.tenDanhMuc}</span>
+                    <span class="cat-bar-amt" style="color:${color}">${fmt(spent)}/${fmt(limit)}</span>
+                </div>
+                <div class="cat-bar-track">
+                    <div class="cat-bar-fill" style="width:${percent}%;background:${color}"></div>
+                </div>
+            `;
+            box.insertBefore(div, box.lastElementChild);
+        });
+    }
 
     $$('#formTabs .form-tab').forEach(btn => {
         btn.addEventListener('click', () => switchTab(btn.dataset.tab));
     });
+
+    await loadAll();
 
 });

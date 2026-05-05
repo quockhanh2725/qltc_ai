@@ -15,11 +15,7 @@ namespace qltc_ai.Controllers
             _tranService = tranService;
         }
 
-        [HttpGet("")]
-        public IActionResult Index()
-        {  
-            return View();
-        }
+        
         [HttpPut("add")]
         public IActionResult AddMoney(decimal money , string note , string typeTran)
         {

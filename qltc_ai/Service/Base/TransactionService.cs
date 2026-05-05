@@ -70,7 +70,7 @@ namespace qltc_ai.Service.Base
             var cate = detail.IdDanhMucNavigation;
             if (cate == null)
                 return false;
-
+            
             if(typeTran != cate.LoaiDanhMuc)
                 return false;
 
@@ -80,7 +80,9 @@ namespace qltc_ai.Service.Base
                 decimal daTieu = detail.TienDaTieu ?? 0;
                 decimal gioiHan = detail.GioiHanTien ?? 0;
 
-                if (gioiHan > 0 && daTieu + money > gioiHan)
+                if (gioiHan <= 0)
+                    return false;
+                if (daTieu + money > gioiHan)
                     return false;
 
                 detail.TienDaTieu = daTieu + money;

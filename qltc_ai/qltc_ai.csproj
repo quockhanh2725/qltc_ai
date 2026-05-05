@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\user\js\budget.js" />
+  </ItemGroup>
+
+  <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\user\css\budget.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\user\js\budget.js" />
   </ItemGroup>
 
   <ItemGroup>
@@ -51,6 +56,7 @@
     <None Include="wwwroot\lib\jquery\dist\jquery.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.js" />
     <None Include="wwwroot\lib\jquery\dist\jquery.min.map" />
+    <None Include="wwwroot\user\js\budget.js" />
   </ItemGroup>
 
   <ItemGroup>

@@ -48,7 +48,10 @@ namespace qltc_ai.Service.Base
           
             if (prev != null)
             {
-                var oldCategories = _categoryRepo.GetByBudgetC(prev.IdNganSach);
+                var t = _categoryRepo.GetByBudgetT(prev.IdNganSach);
+
+                var oldCategories = _categoryRepo.GetByBudgetC(prev.IdNganSach)
+                                    .Concat(t != null ? new[] { t } : Array.Empty<ChiTietDanhMuc>());
 
                 var newCategories = oldCategories.Select(x => new ChiTietDanhMuc
                 {
