@@ -9,7 +9,7 @@ namespace qltc_ai.Repositories
         {
         }
 
-       
+
         public List<Danhmuc> GetAllCateogry()
         {
             return _context.Danhmuc.ToList();

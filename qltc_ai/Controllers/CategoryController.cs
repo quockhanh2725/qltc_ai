@@ -17,6 +17,13 @@ namespace qltc_ai.Controllers
         {
             return View();
         }
+
+        [HttpGet("all")]
+        public IActionResult All()
+        {
+            var lis = _cateService.GetAllCategory();
+            return Ok(lis);
+        }
         [HttpGet("by-budget")]
         public IActionResult GetByBudget(int budgetId)
         {

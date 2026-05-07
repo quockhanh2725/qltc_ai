@@ -17,6 +17,16 @@ namespace qltc_ai.Controllers
         {  
             return View();
         }
+        [HttpGet("list")]
+        public IActionResult List()
+        {
+            var now = DateTime.Now;
+            var accId = HttpContext.Session.GetInt32("AccountId");
+
+            var lis = _tranService.GetByAccountAndMonth(accId.Value , now.Month , now.Year);
+
+            return Ok(lis);
+        }
         [HttpPost("add")]
         public IActionResult Add(int idDetail, decimal money, string note , string typeTran)
         {

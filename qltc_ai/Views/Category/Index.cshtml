@@ -1,10 +1,63 @@
-﻿﻿﻿@{
+﻿@{
     ViewData["Title"] = "Ngân Sách";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<!DOCTYPE html>
-<html>
-<body>
-    <h2>Category</h2>
-</body>
-</html>
+
+<link rel="stylesheet" href="~/user/css/style.css" asp-append-version="true">
+<link rel="stylesheet" href="~/user/css/budget.css" asp-append-version="true">
+
+<div class="main">
+    <div class="topbar">
+        <div>
+            <div id="month" class="topbar-title">Ngân sách tháng 3</div>
+        </div>
+        <div class="topbar-r">
+            <button class="notif-btn" style="margin-right:2px">🔔</button>
+            <button class="t-btn primary">🤖 Gợi ý AI</button>
+        </div>
+    </div>
+
+    <div class="page-body">
+
+        <div class="grid-4 bud-kpi-row">
+            <div class="kpi inc">
+                <div class="kpi-ico inc">💵</div>
+                <div class="kpi-lbl">Tổng ngân sách</div>
+                <div class="kpi-val" data-kpi="budget">—</div>
+            </div>
+            <div class="kpi exp">
+                <div class="kpi-ico exp">📊</div>
+                <div class="kpi-lbl">Đã phân bổ</div>
+                <div class="kpi-val" data-kpi="alloc">—</div>
+            </div>
+            <div class="kpi exp">
+                <div class="kpi-ico exp">💸</div>
+                <div class="kpi-lbl">Đã chi tiêu</div>
+                <div class="kpi-val" data-kpi="spent">—</div>
+            </div>
+            <div class="kpi sav">
+                <div class="kpi-ico sav">💰</div>
+                <div class="kpi-lbl">Còn lại</div>
+                <div class="kpi-val" data-kpi="left">—</div>
+            </div>
+        </div>
+
+        <div class="grid-3 bud-grid"></div>
+
+    </div>
+</div>
+
+<div class="modal-overlay" id="editOverlay">
+    <div class="modal-box">
+        <div class="modal-title" id="editLabel">Điều chỉnh ngân sách</div>
+        <input id="editInput" type="number" min="0" step="50000"
+               style="width:100%;padding:10px 12px;border:1px solid var(--border);border-radius:8px;font-size:14px;margin-bottom:16px;box-sizing:border-box">
+        <div class="modal-actions">
+            <button class="t-btn" id="btnCancelEdit" style="flex:1">Huỷ</button>
+            <button class="t-btn primary" id="btnSaveEdit" style="flex:1">Lưu</button>
+        </div>
+    </div>
+</div>
+
+<script src="~/user/js/budget.js" asp-append-version="true"></script>
+

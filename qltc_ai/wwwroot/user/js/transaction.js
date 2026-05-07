@@ -201,6 +201,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     async function saveBudget() {
         const amtRaw = document.getElementById('bAmt').value.replace(/[^\d-]/g, '');
         const money = parseInt(amtRaw);
+        let month = null;
+        if (currentBudgetDate) {
+            const d = new Date(currentBudgetDate);
+            month = d.getMonth() + 1;
+        }
 
         if (!money) return showToast('Nhập số tiền ngân sách', 'warn');
         if (money <= 0) return showToast('Số tiền không được âm', 'warn');
@@ -213,7 +218,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const res = await fetch(`/budget/add`, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-                body: new URLSearchParams({ money, note: "Thu Nhập", typeTran: "ThuNhap" })
+                body: new URLSearchParams({ money, note: `Thu nhập tháng ${month}`, typeTran: "ThuNhap" })
 
             });
             const data = await safeJson(res);

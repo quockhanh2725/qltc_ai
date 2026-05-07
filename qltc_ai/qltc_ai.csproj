@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <_ContentIncludedByDefault Remove="wwwroot\user\css\budget.css" />
+    <_ContentIncludedByDefault Remove="wwwroot\user\css\history.css" />
     <_ContentIncludedByDefault Remove="wwwroot\user\js\budget.js" />
   </ItemGroup>
 

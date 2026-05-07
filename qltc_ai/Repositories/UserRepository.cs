@@ -10,7 +10,7 @@ namespace qltc_ai.Repositories
 
         public void AddUser(Nguoidung ng)
         {
-           _context.Nguoidung.Add(ng);
+            _context.Nguoidung.Add(ng);
         }
 
         public Nguoidung? GetByAccountId(int accId)
@@ -25,7 +25,7 @@ namespace qltc_ai.Repositories
 
         public void Save()
         {
-           _context.SaveChanges();
+            _context.SaveChanges();
         }
 
         public void UpdateUser(Nguoidung ng)
