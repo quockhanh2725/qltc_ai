@@ -14,7 +14,7 @@
         <div class="topbar-r">
             <a href="history" class="t-btn outline">📋 Lịch sử</a>
             <div class="notif-btn">🔔</div>
-            <button class="t-btn primary" id="btnOpenAdvisor">🤖 Hỏi AI</button>
+            <button class="t-btn primary" data-chat-trigger>🤖 Hỏi AI</button>
         </div>
     </div>
 
@@ -30,7 +30,7 @@
         <div class="ai-box" id="aiBox" style="cursor:pointer;transition:box-shadow .2s">
             <div class="ai-box-title">
                 ✨ NHẬP TỰ NHIÊN — AI TỰ HIỂU
-                <span style="float:right;font-size:11px;background:rgba(99,102,241,.15);color:var(--indigo);padding:2px 8px;border-radius:20px;font-weight:600">💬 Mở chat</span>
+                <span data-chat-trigger style="float:right;font-size:11px;background:rgba(99,102,241,.15);color:var(--indigo);padding:2px 8px;border-radius:20px;font-weight:600">💬 Mở chat</span>
             </div>
             <div class="ai-result" id="aiResult" style="display:none">
                 <div style="font-size:20px">✅</div>

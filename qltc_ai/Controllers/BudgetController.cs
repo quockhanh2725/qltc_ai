@@ -22,12 +22,18 @@ namespace qltc_ai.Controllers
 
             var accountId = HttpContext.Session.GetInt32("AccountId");
 
-            bool success = _tranService.AddTransaction(accountId.Value, 0, money, note, typeTran);
+            var result = _tranService.AddTransaction(accountId.Value, 0, money, note, typeTran);
 
-            if (success)
-                return Ok("OK");
+            if (result.Success)
+                return Ok(new
+                {
+                    message = result.Message
+                });
 
-            return BadRequest("Lỗi");
+            return BadRequest(new
+            {
+                message = result.Message
+            });
         }
 
         [HttpGet("current")]

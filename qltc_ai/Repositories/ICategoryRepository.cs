@@ -11,6 +11,7 @@ namespace qltc_ai.Repositories
         ChiTietDanhMuc? GetByBudgetT(int budgetId);
         void Add(ChiTietDanhMuc detail);
         ChiTietDanhMuc? FindById(int id);
+        ChiTietDanhMuc? GetByCategoryId(int accId, int idDanhMuc, int month, int year);
         void AddRange(List<ChiTietDanhMuc> list);
         void UpdateCategory(ChiTietDanhMuc detail);
         void Save();

@@ -45,10 +45,10 @@
         
             @RenderBody()
 
-    </div>
-
+    @await Html.PartialAsync("_chat")
 
     @RenderSection("Scripts", required: false)
 
+    <script src="~/user/js/chat.js" asp-append-version="true"></script>
 </body>
 </html>
