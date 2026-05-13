@@ -60,5 +60,15 @@ namespace qltc_ai.Repositories
                  .Include(x => x.IdDanhMucNavigation)
                  .FirstOrDefault(x => x.IdNganSach == budgetId && x.IdDanhMucNavigation.LoaiDanhMuc == "ThuNhap");
         }
+
+        public ChiTietDanhMuc? GetByCategoryId(int accId, int idDanhMuc, int month, int year)
+        {
+            return _context.ChiTietDanhMuc
+                .Include(x => x.IdDanhMucNavigation)
+                .FirstOrDefault(x =>x.IdDanhMuc == idDanhMuc
+                && x.IdNganSachNavigation.IdTaiKhoan == accId &&
+                x.IdNganSachNavigation.Thang.Value.Month == month && 
+                x.IdNganSachNavigation.Thang.Value.Year == year);
+        }
     }
 }

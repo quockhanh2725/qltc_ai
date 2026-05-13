@@ -1,0 +1,45 @@
+﻿<link rel="stylesheet" href="~/user/css/chat.css" asp-append-version="true">
+
+
+<div class="cw-overlay" id="cw-overlay"></div>
+
+<div class="cw-drawer" id="cw-drawer">
+
+    <div class="cw-head">
+        <div class="cw-head-ico">🤖</div>
+        <div>
+            <div class="cw-head-name">Trợ lý tài chính</div>
+            <div class="cw-head-sub">
+                <span class="cw-dot"></span> Đang hoạt động
+            </div>
+        </div>
+        <button class="cw-close" id="cw-close">✕</button>
+    </div>
+
+    <div class="cw-msgs" id="cw-msgs">
+        <div class="cw-bwrap">
+            <div class="cw-ava ai">AI</div>
+            <div class="cw-bubble ai">
+                Xin chào! Tôi là trợ lý tài chính cá nhân của bạn.
+                Bạn muốn cải thiện về tài chính , nhập giao dịch bằng ngôn ngữ tự nhiên hay phân tích tài chính ? 💰
+            </div>
+        </div>
+    </div>
+
+    <div class="cw-suggs" id="cw-suggs">
+        <button class="cw-sugg">🍜 Giảm chi ăn uống thế nào?</button>
+        <button class="cw-sugg">💎 Kế hoạch tiết kiệm 6 tháng</button>
+        <button class="cw-sugg">📱 Có nên mua điện thoại mới không?</button>
+    </div>
+
+    <div class="cw-inp-bar">
+        <textarea class="cw-inp"
+                  id="cw-inp"
+                  placeholder="Hỏi về tài chính cá nhân..."
+                  rows="1"></textarea>
+        <button class="cw-send" id="cw-send">➢</button>
+    </div>
+
+</div>
+
+<div class="cw-toast" id="cw-toast"></div>

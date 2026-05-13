@@ -3,6 +3,7 @@ using qltc_ai.Models;
 using qltc_ai.Repositories;
 using qltc_ai.Service;
 using qltc_ai.Service.Base;
+//using qltc_ai.Service.Base.AI;
 using System.ComponentModel;
 using System.Text.Json.Serialization;
 
@@ -44,9 +45,16 @@ builder.Services.AddScoped<IBudgetService, BudgetService>();
 builder.Services.AddScoped<ITransactionService, TransactionService>();
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
+
+//builder.Services.AddSingleton<AIService>();
 builder.Services.AddSingleton<EmailService>();
+//builder.Services.AddSingleton<ChatParserService>();
+//builder.Services.AddSingleton<MLModelsTrainer>();
 
 var app = builder.Build();
+
+//var ai = app.Services.GetRequiredService<AIService>();
+//ai.Init();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

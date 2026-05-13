@@ -32,12 +32,18 @@ namespace qltc_ai.Controllers
         {
             var accId = HttpContext.Session.GetInt32("AccountId");
 
-            var ok = _tranService.AddTransaction(accId.Value, idDetail, money, note , typeTran);
+            var result = _tranService.AddTransaction(accId.Value, idDetail, money, note , typeTran);
 
-            if (ok)
-                return Ok(new { message = "them thanh cong" });
+            if (result.Success)
+                return Ok(new
+                {
+                    message = result.Message
+                });
 
-            return BadRequest(new { message = "Số tiền vượt quá giới hạn" });
+            return BadRequest(new
+            {
+                message = result.Message
+            });
         }
 
         [HttpPut("update")]

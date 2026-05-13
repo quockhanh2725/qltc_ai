@@ -1,5 +1,7 @@
 ﻿using qltc_ai.Models;
+using qltc_ai.Models.AI;
 using qltc_ai.Repositories;
+//using qltc_ai.Service.Base.AI;
 
 namespace qltc_ai.Service.Base
 {
@@ -9,12 +11,9 @@ namespace qltc_ai.Service.Base
         private readonly IBudgetRepository _budgetRepo;
         private readonly ITransactionRepository _transactionRepo;
         private readonly ICategoryService _categoryService;
+        //private readonly AIService _aiService;
 
-        public TransactionService(
-            ICategoryRepository categoryRepo,
-            IBudgetRepository budgetRepo,
-            ITransactionRepository transactionRepo,
-            ICategoryService categoryService)
+        public TransactionService(ICategoryRepository categoryRepo, IBudgetRepository budgetRepo, ITransactionRepository transactionRepo, ICategoryService categoryService)
         {
             _categoryRepo = categoryRepo;
             _budgetRepo = budgetRepo;
@@ -32,64 +31,112 @@ namespace qltc_ai.Service.Base
             return _transactionRepo.GetByAccountAndMonth(accId, month, year);
         }
 
-        public bool AddTransaction(int accId, int idDetail, decimal money, string note, string typeTran)
+        public ServiceResult AddTransaction(int accId, int idDetail, decimal money, string note, string typeTran)
         {
             if (money <= 0)
-                return false;
+                return new ServiceResult
+                {
+                    Success = false,
+                    Message = "Số tiền không hợp lệ"
+                };
             var now = DateTime.Now;
             ChiTietDanhMuc? detail;
             Ngansach? budget;
 
             if (typeTran == "ThuNhap")
             {
-                
+
                 budget = _budgetRepo.GetByMonth(accId, now.Month, now.Year);
                 if (budget == null)
-                    return false;
+                    return new ServiceResult
+                    {
+                        Success = false,
+                        Message = "Không tìm thấy ngân sách"
+                    };
 
-               
+
                 detail = _categoryRepo.GetByBudgetT(budget.IdNganSach);
                 if (detail == null)
-                    return false;
+                    return new ServiceResult
+                    {
+                        Success = false,
+                        Message = "Không tìm thấy danh mục thu nhập"
+                    };
             }
             else
             {
-                
+
                 detail = _categoryRepo.FindById(idDetail);
                 if (detail == null)
-                    return false;
+                    return new ServiceResult
+                    {
+                        Success = false,
+                        Message = "Danh mục không tồn tại"
+                    };
 
                 budget = _budgetRepo.FindById(detail.IdNganSach ?? 0);
                 if (budget == null || budget.IdTaiKhoan != accId)
-                    return false;
+                    return new ServiceResult
+                    {
+                        Success = false,
+                        Message = "Ngân sách không hợp lệ"
+                    };
 
                 if (budget.Thang?.Month != now.Month || budget.Thang?.Year != now.Year)
-                    return false;
+                    return new ServiceResult
+                    {
+                        Success = false,
+                        Message = "Ngân sách không thuộc tháng hiện tại"
+                    };
             }
 
             var cate = detail.IdDanhMucNavigation;
             if (cate == null)
-                return false;
-            
-            if(typeTran != cate.LoaiDanhMuc)
-                return false;
+                return new ServiceResult
+                {
+                    Success = false,
+                    Message = "Không tìm thấy danh mục"
+                };
 
-            
+            if (typeTran != cate.LoaiDanhMuc)
+                return new ServiceResult
+                {
+                    Success = false,
+                    Message = "Loại giao dịch không hợp lệ"
+                };
+
+
             if (cate.LoaiDanhMuc == "ChiTieu")
             {
                 decimal daTieu = detail.TienDaTieu ?? 0;
                 decimal gioiHan = detail.GioiHanTien ?? 0;
 
                 if (gioiHan <= 0)
-                    return false;
+                    return new ServiceResult
+                    {
+                        Success = false,
+                        Message =
+                    $"Danh mục {cate.TenDanhMuc} chưa có giới hạn"
+                    };
+
                 if (daTieu + money > gioiHan)
-                    return false;
+                {
+                    decimal conLai = gioiHan - daTieu;
+                    return new ServiceResult
+                    {
+                        Success = false,
+                        Message =
+                    $"Vượt giới hạn {cate.TenDanhMuc}. "
+                    + $"Còn lại {conLai:N0}đ"
+                    };
+                }
+
 
                 detail.TienDaTieu = daTieu + money;
-                
-               
+
+
             }
-            else if(cate.LoaiDanhMuc == "ThuNhap")
+            else if (cate.LoaiDanhMuc == "ThuNhap")
             {
                 budget.TongTien = (budget.TongTien ?? 0) + money;
                 detail.TienDaTieu = (detail.TienDaTieu ?? 0) + money;
@@ -115,7 +162,14 @@ namespace qltc_ai.Service.Base
             _transactionRepo.Save();
             _categoryRepo.Save();
 
-            return true;
+            return new ServiceResult
+            {
+                Success = true,
+                Message =
+            $"Đã thêm giao dịch "
+            + $"{cate.TenDanhMuc} "
+            + $"{money:N0}đ"
+            };
         }
 
         public bool UpdateTransaction(int accId, int idTran, decimal newMoney, string newNote)
@@ -131,7 +185,7 @@ namespace qltc_ai.Service.Base
             if (chiTiet == null)
                 return false;
 
-           
+
             if (tran.LoaiGiaoDich == "ChiTieu")
             {
                 decimal diff = newMoney - (tran.Tien ?? 0);
@@ -162,7 +216,7 @@ namespace qltc_ai.Service.Base
             if (tran == null)
                 return false;
 
-            
+
             if (tran.LoaiGiaoDich == "ChiTieu" && tran.IdChiTiet.HasValue)
             {
                 var chiTiet = _categoryRepo.FindById(tran.IdChiTiet.Value);
@@ -179,6 +233,11 @@ namespace qltc_ai.Service.Base
             _transactionRepo.Save();
 
             return true;
+        }
+
+        public ServiceResult AddByChat(int accId, string text, decimal money)
+        {
+            throw new NotImplementedException();
         }
     }
 }
