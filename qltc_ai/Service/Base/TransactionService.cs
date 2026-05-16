@@ -1,7 +1,8 @@
-﻿using qltc_ai.Models;
+﻿using MailKit;
+using qltc_ai.Models;
 using qltc_ai.Models.AI;
 using qltc_ai.Repositories;
-//using qltc_ai.Service.Base.AI;
+using qltc_ai.Service.Base.AI;
 
 namespace qltc_ai.Service.Base
 {
@@ -11,14 +12,15 @@ namespace qltc_ai.Service.Base
         private readonly IBudgetRepository _budgetRepo;
         private readonly ITransactionRepository _transactionRepo;
         private readonly ICategoryService _categoryService;
-        //private readonly AIService _aiService;
+        private readonly AIService _aiService;
 
-        public TransactionService(ICategoryRepository categoryRepo, IBudgetRepository budgetRepo, ITransactionRepository transactionRepo, ICategoryService categoryService)
+        public TransactionService(ICategoryRepository categoryRepo, IBudgetRepository budgetRepo, ITransactionRepository transactionRepo, ICategoryService categoryService, AIService aIService)
         {
             _categoryRepo = categoryRepo;
             _budgetRepo = budgetRepo;
             _transactionRepo = transactionRepo;
             _categoryService = categoryService;
+            _aiService = aIService;
         }
 
         public List<Giaodich> GetByAccount(int accId)
@@ -237,7 +239,40 @@ namespace qltc_ai.Service.Base
 
         public ServiceResult AddByChat(int accId, string text, decimal money)
         {
-            throw new NotImplementedException();
+
+            int idDanhMuc = _aiService.PredictCategory(text);
+
+            var now = DateTime.Now;
+
+
+            ChiTietDanhMuc? detail = _categoryRepo.GetByCategoryId(accId, idDanhMuc, now.Month, now.Year);
+
+            if (detail == null)
+                return new ServiceResult
+                {
+                    Success = false,
+                    Message = "Không tìm thấy danh mục"
+                };
+
+
+            string? typeTran = detail.IdDanhMucNavigation.LoaiDanhMuc;
+
+
+            var result = AddTransaction(accId, detail.IdChiTiet, money, text, typeTran);
+
+            if (result.Success)
+            {
+                var path = "data/data.txt";
+                var newLine = $"{text}|{idDanhMuc}";
+
+                var exists = File.Exists(path) &&
+                             File.ReadAllLines(path).Any(l => l.Trim() == newLine);
+
+                if (!exists)
+                    File.AppendAllText(path, Environment.NewLine + newLine);
+            }
+
+            return result;
         }
     }
 }
