@@ -59,5 +59,26 @@ namespace qltc_ai.Controllers
                 message = "Retrain success"
             });
         }
+
+        [HttpPost("/transaction/chat")]
+        public IActionResult AddByChat(string text)
+        {
+            if (string.IsNullOrWhiteSpace(text))
+                return BadRequest(new { message = "Nội dung không hợp lệ" });
+
+            var accId = HttpContext.Session.GetInt32("AccountId")!.Value;
+            var (note, money) = _parser.Parse(text);
+
+            if (money <= 0)
+                return BadRequest(new { message = "Không nhận diện được số tiền" });
+
+            var result = _tranService.AddByChat(accId, text, money);
+
+            if (result.Success)
+                return Ok(new { message = result.Message, note, money });
+
+            return BadRequest(new { message = result.Message });
+        }
+
     }
 }
