@@ -5,3 +5,4 @@
 *.sln.docstates
 obj/
 bin/
+data/model.zip
