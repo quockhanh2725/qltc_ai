@@ -70,5 +70,13 @@ namespace qltc_ai.Repositories
                 x.IdNganSachNavigation.Thang.Value.Month == month && 
                 x.IdNganSachNavigation.Thang.Value.Year == year);
         }
+
+        public decimal GetTotalLimitByBudget(int budgetId)
+        {
+            return _context.ChiTietDanhMuc
+                .Where(x => x.IdNganSach == budgetId 
+                && x.IdDanhMucNavigation.LoaiDanhMuc == "ChiTieu")
+                .Sum(x => x.GioiHanTien ?? 0);
+        }
     }
 }

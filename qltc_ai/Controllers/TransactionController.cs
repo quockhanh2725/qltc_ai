@@ -27,6 +27,7 @@ namespace qltc_ai.Controllers
 
             return Ok(lis);
         }
+
         [HttpPost("add")]
         public IActionResult Add(int idDetail, decimal money, string note , string typeTran)
         {
@@ -51,24 +52,24 @@ namespace qltc_ai.Controllers
         {
             var accId = HttpContext.Session.GetInt32("AccountId");
 
-            var ok = _tranService.UpdateTransaction(accId.Value, idTran, newMoney, newNote);
+            var reusult = _tranService.UpdateTransaction(accId.Value, idTran, newMoney, newNote);
 
-            if (ok)
-                return Ok(new { message = "sua thanh cong" });
+            if (reusult.Success)
+                return Ok(new { message = reusult.Message });
 
-            return BadRequest(new { message = "Số tiền vượt quá giới hạn" });
+            return BadRequest(new { message = reusult.Message });
         }
 
-        [HttpDelete("delete/{id}")]
-        public IActionResult Delete(int id)
+        [HttpDelete("delete/{idTran}")]
+        public IActionResult Delete(int idTran)
         {
+            var accId = HttpContext.Session.GetInt32("AccountId");
+            var result = _tranService.DeleteTransaction(accId.Value , idTran);
 
-            var ok = _tranService.DeleteTransaction(id);
+            if (result.Success)
+                return Ok(new { message = result.Message });
 
-            if (ok)
-                return Ok(new { message = "xoa thanh cong" });
-
-            return BadRequest(new { message = "khong tim thay giao dich" });
+            return BadRequest(new { message = result.Message });
         }
     }
 }
