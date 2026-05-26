@@ -4,7 +4,7 @@ using qltc_ai.Service.Base;
 namespace qltc_ai.Controllers
 {
     [Route("transaction")]
-    //[CheckLogin]
+    [CheckLogin]
     public class TransactionController : Controller
     {
         private readonly ITransactionService _tranService;

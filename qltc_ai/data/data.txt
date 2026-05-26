@@ -2,5 +2,143 @@
 ăn bún bò huế|1
 ăn hủ tiếu|1
 uống trà sữa tocotoco|1
+đi bộ|1
+ăn cơm tấm|1
+ăn bánh mì|1
+ăn bún chả|1
+uống cà phê|1
+ăn pizza|1
+ăn hamburger|1
+uống nước ép|1
+ăn lẩu|1
+ăn bánh cuốn|1
+uống sinh tố|1
 grab bike đi học|2
+máy bay|2
+đi grab car|2
+đi xe bus|2
+đổ xăng xe máy|2
+gửi xe tháng|2
+đi taxi|2
+mua vé tàu|2
+mua vé máy bay|2
+đi xe ôm|2
+sửa xe máy|2
+thay nhớt xe|2
+đi grab food|2
+đặt xe công nghệ|2
+đi xe đạp|2
+tiền thuê nhà|3
+tiền điện tháng|3
+tiền nước tháng|3
+mua đồ dùng nhà bếp|3
+sửa chữa nhà|3
+mua chăn gối|3
+tiền internet|3
+mua đồ vệ sinh|3
+mua bóng đèn|3
+tiền gas nấu ăn|3
+mua bàn ghế|3
+tiền wifi|3
+mua rèm cửa|3
+sơn nhà|3
+mua máy lọc nước|3
+xem phim rạp|4
+mua game steam|4
+karaoke bạn bè|4
+đi du lịch|4
+mua sách truyện|4
+xem concert|4
+chơi bowling|4
+đi công viên|4
+thuê phim netflix|4
+đi bar|4
+chơi game online|4
+mua vé sự kiện|4
+đi picnic|4
+chụp ảnh dạo|4
+đi escape room|4
+học phí khóa học|5
+mua sách giáo trình|5
+mua bút vở|5
+đóng tiền học thêm|5
+mua khóa học online|5
+học tiếng anh|5
+mua tài liệu học|5
+đóng học phí đại học|5
+học lái xe|5
+mua máy tính học|5
+đóng phí thi chứng chỉ|5
+mua flashcard|5
+học đàn guitar|5
+học vẽ|5
+mua dụng cụ học tập|5
+khám bệnh|6
+mua thuốc|6
+tiêm vaccine|6
+tập gym|6
+mua vitamin|6
+khám nha sĩ|6
+mua kính mắt|6
+mua bảo hiểm sức khỏe|6
+tập yoga|6
+khám sức khỏe định kỳ|6
+mua thực phẩm chức năng|6
+chạy bộ buổi sáng|6
+mua máy đo huyết áp|6
+điều trị bệnh|6
+mua kem chống nắng|6
 mua áo shopee|7
+mua quần áo|7
+mua giày dép|7
+mua túi xách|7
+mua mỹ phẩm|7
+mua điện thoại|7
+mua laptop|7
+mua đồng hồ|7
+mua phụ kiện điện thoại|7
+mua quần áo thể thao|7
+mua nước hoa|7
+mua tai nghe|7
+mua đồ gia dụng|7
+mua máy ảnh|7
+mua smartwatch|7
+phí ngân hàng|8
+từ thiện|8
+quà sinh nhật bạn|8
+đám cưới|8
+lì xì|8
+phí dịch vụ|8
+mua đồ linh tinh|8
+phí bảo trì|8
+tiền phạt|8
+chi phí khác|8
+tặng quà|8
+đóng góp hội nhóm|8
+phí chuyển khoản|8
+mua đồ không rõ|8
+chi tiêu phát sinh|8
+lương tháng|14
+thưởng dự án|14
+thu nhập freelance|14
+tiền bán hàng online|14
+lãi ngân hàng|14
+thu nhập tháng|14
+nhận lương|14
+thưởng tháng|14
+tiền làm thêm|14
+thu nhập phụ|14
+tiền cộng tác viên|14
+thu nhập đầu tư|14
+tiền bán đồ cũ|14
+nhận thưởng kpi|14
+thu nhập thêm|14
+ăn mỳ gà|1
+tôi mua vé máy bay từ tp. hcm đến hà nội 5 đồng|2
+tôi đi ăn phở|1
+tôi ăn phở 1000 đồng|1
+tôi ăn mỳ|1
+tôi ăn phở|1
+tôi nộp tiền tại|3
+tôi mua game tại steam|4
+tôi uống cafe|1
