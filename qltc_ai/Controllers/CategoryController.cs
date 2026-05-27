@@ -4,7 +4,7 @@ using qltc_ai.Service.Base;
 namespace qltc_ai.Controllers
 {
     [Route("category")]
-    //[CheckLogin]
+    [CheckLogin]
     public class CategoryController : Controller
     {
         private readonly ICategoryService _cateService;

@@ -4,7 +4,7 @@ using qltc_ai.Service.Base;
 namespace qltc_ai.Controllers
 {
     [Route("budget")]
-    //[CheckLogin]
+    [CheckLogin]
     public class BudgetController : Controller
     {
         private readonly IBudgetService _budgetService;

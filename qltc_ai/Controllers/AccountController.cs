@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 using qltc_ai.Models;
 using qltc_ai.Models.Enum;
 using qltc_ai.Service.Base;
@@ -104,6 +105,15 @@ namespace qltc_ai.Controllers
                     return BadRequest(new { message = "k hop le" });
             }
         }
+
+        [HttpPost("logout")]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            Response.Cookies.Delete(".AspNetCore.Session");
+            return RedirectToAction("", "account");
+        }
+
         [HttpDelete("delete/{id}")]
         public IActionResult DeleteAccount(int id)
         {

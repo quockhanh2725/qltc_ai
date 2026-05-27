@@ -27,9 +27,7 @@
             <a class="nav-btn active" href="/">📊 Tổng quan</a>
             <a class="nav-btn" href="/transaction">✏️ Nhập chi tiêu</a>
             <a class="nav-btn" href="/category">🎯 Ngân sách</a>
-            <a class="nav-btn" href="/report">📈 Báo cáo</a>
             <a class="nav-btn" href="/history">🕑 Lịch sử</a>
-            <a class="nav-btn" href="/ai">🤖 Gợi ý AI</a>
         </nav>
 
         <div class="sb-user">
@@ -50,5 +48,8 @@
     @RenderSection("Scripts", required: false)
 
     <script src="~/user/js/chat.js" asp-append-version="true"></script>
+    <script src="~/user/js/logout.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    
 </body>
 </html>

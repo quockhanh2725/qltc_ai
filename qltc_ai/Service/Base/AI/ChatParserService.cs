@@ -43,10 +43,9 @@ namespace qltc_ai.Service.Base.AI
 
         private string CleanNote(string text)
         {
-            text = Regex.Replace(text,@"\d+(?:[.,]\d+)?\s*(k|tr|đ|vnd|m)?\b","");
-
-            text = Regex.Replace(text,@"\s+"," ");
-
+            text = Regex.Replace(text, @"\d+(?:[.,]\d+)?\s*(k|tr|đ|vnd)\b", "");
+            text = Regex.Replace(text, @"\s+\d+\s*$", "");
+            text = Regex.Replace(text, @"\s+", " ");
             return text.Trim();
         }
     }
