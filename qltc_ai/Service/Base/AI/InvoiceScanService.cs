@@ -39,7 +39,7 @@ namespace qltc_ai.Service.Base.AI
         public string? GetNgrokUrl() => _ngrokUrl ?? _defaultNgrokUrl;
         public void SetNgrokUrl(string url) => _ngrokUrl = url.TrimEnd('/');
 
-        
+
         public async Task<ScanResult> ScanImageAsync(IFormFile image)
         {
             if (image is null || image.Length == 0) return ScanResult.Fail("Không có file ảnh.");
@@ -73,9 +73,64 @@ namespace qltc_ai.Service.Base.AI
             catch (Exception ex) { return ScanResult.Fail("Lỗi phân tích ảnh: " + ex.Message); }
         }
 
-        public Task<ScanResult> ScanQrTextAsync(string qrText)
+        public async Task<ScanResult> ScanQrTextAsync(string qrText)
         {
-            throw new NotImplementedException();
+            if (string.IsNullOrWhiteSpace(qrText)) return ScanResult.Fail("Nội dung QR trống.");
+
+            try
+            {
+                var payload = new
+                {
+                    model = GroqModel,
+                    messages = new[]
+                    {
+                new { role = "user", content = $"{Prompt}\n\nNội dung QR:\n{qrText}" }
+            },
+                    max_tokens = 128,
+                    temperature = 0.1
+                };
+
+                var (note, money) = await CallGroq(payload);
+                return ScanResult.Ok(note, money);
+            }
+            catch (Exception ex) { return ScanResult.Fail("Lỗi phân tích QR: " + ex.Message); }
+        }
+
+
+        private async Task<(string Note, decimal Money)> CallGroq(object payload)
+        {
+            var client = _http.CreateClient();
+            client.DefaultRequestHeaders.Add("Authorization", $"Bearer {_groqApiKey}");
+
+            var req = new StringContent(JsonSerializer.Serialize(payload), Encoding.UTF8, "application/json");
+            var resp = await client.PostAsync(GroqUrl, req);
+            var body = await resp.Content.ReadAsStringAsync();
+
+            if (!resp.IsSuccessStatusCode)
+                throw new HttpRequestException($"Groq {(int)resp.StatusCode}: {body}");
+
+            using var doc = JsonDocument.Parse(body);
+            var text = doc.RootElement
+                               .GetProperty("choices")[0]
+                               .GetProperty("message")
+                               .GetProperty("content")
+                               .GetString() ?? string.Empty;
+
+            var note = string.Empty;
+            var money = 0m;
+
+            foreach (var line in text.Split('\n', StringSplitOptions.RemoveEmptyEntries))
+            {
+                if (line.StartsWith("GHI CHÚ:", StringComparison.OrdinalIgnoreCase))
+                    note = line["GHI CHÚ:".Length..].Trim();
+                else if (line.StartsWith("SỐ TIỀN:", StringComparison.OrdinalIgnoreCase))
+                {
+                    var digits = new string(line["SỐ TIỀN:".Length..].Where(char.IsDigit).ToArray());
+                    decimal.TryParse(digits, out money);
+                }
+            }
+
+            return (string.IsNullOrWhiteSpace(note) ? text.Trim() : note, money);
         }
     }
 }
