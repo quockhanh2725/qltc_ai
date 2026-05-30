@@ -78,7 +78,7 @@ namespace qltc_ai.Controllers
             }
         }
         [HttpPost("login")]
-        public IActionResult Authenticate( string email, string password)
+        public async Task<IActionResult> Authenticate( string email, string password)
         {
             var acc = _accountService.Authenticate(email, password);
 
@@ -90,17 +90,25 @@ namespace qltc_ai.Controllers
             if (acc.IsActive == 0)
                 return BadRequest(new { message = "Tài khoản của bạn đã bị khoá" });
 
-            HttpContext.Session.SetInt32("AccountId", acc.IdTaiKhoan);
+            var now = DateTime.Now;
 
-           
+            HttpContext.Session.Clear();
+            await HttpContext.Session.CommitAsync();
+
+            HttpContext.Session.SetInt32("AccountId", acc.IdTaiKhoan);
+            HttpContext.Session.SetInt32("RoleId", acc.RoleId ?? 0);
+            HttpContext.Session.SetInt32("LoginMonth", now.Month);
+            HttpContext.Session.SetInt32("LoginYear", now.Year);
+
+
             _budgetService.AutoResetIfNeeded(acc.IdTaiKhoan);
 
             switch (acc.RoleId)
             {
                 case 2:
-                    return Ok(new { message = "user" });
+                    return Ok(new { message = "user" , redirect = "/" });
                 case 1:
-                    return Ok(new { message = "admin" });
+                    return Ok(new { message = "admin" , redirect = "/admin" });
                 default:
                     return BadRequest(new { message = "k hop le" });
             }
