@@ -6,3 +6,4 @@
 obj/
 bin/
 data/model.zip
+appsettings.Development.json
