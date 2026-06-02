@@ -7,5 +7,6 @@ namespace qltc_ai.Service.Base
         void AutoResetIfNeeded(int accId);
         bool AutoAddNewAccount(int accId);
         Ngansach? GetBudgetByMonth(int accid , int month , int year);
+        Ngansach? GetLatestBudget(int budgetId);
     }
 }

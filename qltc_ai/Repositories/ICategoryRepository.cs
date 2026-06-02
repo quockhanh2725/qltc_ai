@@ -9,6 +9,7 @@ namespace qltc_ai.Repositories
 
         List<ChiTietDanhMuc> GetByBudgetC(int budgetId);
         ChiTietDanhMuc? GetByBudgetT(int budgetId);
+        List<ChiTietDanhMuc> GetAllByBudget(int budgetId);
         void Add(ChiTietDanhMuc detail);
         decimal GetTotalLimitByBudget(int budgetId);
         ChiTietDanhMuc? FindById(int id);

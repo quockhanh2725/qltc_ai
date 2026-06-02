@@ -78,5 +78,13 @@ namespace qltc_ai.Repositories
                 && x.IdDanhMucNavigation.LoaiDanhMuc == "ChiTieu")
                 .Sum(x => x.GioiHanTien ?? 0);
         }
+
+        public List<ChiTietDanhMuc> GetAllByBudget(int budgetId)
+        {
+            return _context.ChiTietDanhMuc
+                .Include(x => x.IdDanhMucNavigation)
+                .Where(x => x.IdNganSach == budgetId)
+                .ToList();
+        }
     }
 }
