@@ -92,7 +92,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!res.ok) throw new Error(data.message);
 
             showToast('Đăng nhập thành công', 'ok');
-            setTimeout(() => window.location.href = '/', 1000);
+            setTimeout(() => window.location.href = data.redirect, 1000);
 
         } catch (err) {
             showToast(err.message, 'warn');

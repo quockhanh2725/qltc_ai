@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             ? 'AI tự nhận diện · Nhập tự nhiên'
             : 'Nhập ngân sách · Kiểm soát chi tiêu';
 
-        if (tab === 'expense') loadCategories();
+        if (tab === 'expense') loadAll();
     }
 
 
@@ -325,7 +325,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             });
 
             if (!found) {
-                loadCategories().then(() => {
+                loadAll().then(() => {
                     document.querySelectorAll('.cat-chip').forEach(c => {
                         if (c.dataset.cat === cat) c.classList.add('on');
                     });
@@ -341,6 +341,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
 
     await loadAll();
+    window.reloadTransactions = loadAll;
 
     btnSaveT?.addEventListener('click', saveTransaction);
     btnResetT?.addEventListener('click', resetFormT);
