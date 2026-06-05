@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-
+let isLoading = false;
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -8,8 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const $$ = sel => document.querySelectorAll(sel);
 
     const history = [];
-    let isLoading = false;
-
 
     const TRANSACTION_VERBS = /(ăn|uống|mua|đặt|order|grab|thanh toán|trả|nạp|đổ|thuê|đóng|chuyển|nhận|lương|thưởng|freelance|bán)\b/i;
     const ADVISORY_SIGNALS = /(\?|nên|có nên|tư vấn|gợi ý|phân tích|kế hoạch|đầu tư|tiết kiệm|lãi|lãi suất|hiệu quả|so sánh|tháng này|tháng sau|bao nhiêu là|có đủ|có tốt)/i;
@@ -27,11 +25,11 @@ document.addEventListener('DOMContentLoaded', () => {
         return 'advice';
     }
 
-
-    function open() {
+    async function open() {
         $('cw-overlay').classList.add('open');
         $('cw-drawer').classList.add('open');
         setTimeout(() => $('cw-inp').focus(), 350);
+        await loadHistory();
     }
 
     function close() {
@@ -39,6 +37,28 @@ document.addEventListener('DOMContentLoaded', () => {
         $('cw-drawer').classList.remove('open');
     }
 
+    async function loadHistory() {
+        const msgs = $('cw-msgs');
+        msgs.innerHTML = '';
+        history.length = 0;
+
+        try {
+            const res = await fetch('/ai/history');
+            if (!res.ok) return;
+
+            const data = await res.json();
+            if (!data.messages?.length) return;
+
+            data.messages.forEach(m => {
+                addBubble(m.content, m.role === 'assistant' ? 'ai' : 'user', true);
+                history.push({ role: m.role, content: m.content });
+            });
+
+            msgs.scrollTop = msgs.scrollHeight;
+        } catch (e) {
+            console.warn('Không thể tải lịch sử chat:', e);
+        }
+    }
 
     async function sendMsg() {
         if (isLoading) return;
@@ -67,14 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (e) {
             removeTyping(tid);
-            addBubble('Chức năng này chưa được cập nhật.', 'ai');
+            addBubble('Xin lỗi, lỗi kết nối. Vui lòng thử lại! 🔄', 'ai');
             console.error(e);
         } finally {
             isLoading = false;
             setSendLoading(false);
         }
     }
-
 
     async function handleTransaction(text) {
         const res = await fetch('/transaction/chat', {
@@ -91,20 +110,26 @@ document.addEventListener('DOMContentLoaded', () => {
         return `✅ **${note || text}**${fmt ? ` — **${fmt}**` : ''}\n${message}`;
     }
 
-
     async function Azusa(messages) {
-        return 'Chức năng này chưa được cập nhật.';
+        const res = await fetch('/ai/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({ messages: JSON.stringify(messages) }),
+        });
+
+        if (!res.ok) throw new Error('Azusa ' + res.status);
+        const data = await res.json();
+        return data.reply || '...';
     }
 
-
-    function addBubble(raw, role) {
+    function addBubble(raw, role, skipScroll = false) {
         const msgs = $('cw-msgs');
         const wrap = document.createElement('div');
         wrap.className = 'cw-bwrap' + (role === 'user' ? ' user' : '');
 
         const ava = document.createElement('div');
         ava.className = `cw-ava ${role}`;
-        ava.textContent = role === 'ai' ? 'AI' : 'UR';
+        ava.textContent = role === 'ai' ? 'AI' : 'US';
 
         const bub = document.createElement('div');
         bub.className = `cw-bubble ${role}`;
@@ -115,7 +140,8 @@ document.addEventListener('DOMContentLoaded', () => {
         wrap.appendChild(ava);
         wrap.appendChild(bub);
         msgs.appendChild(wrap);
-        msgs.scrollTop = msgs.scrollHeight;
+
+        if (!skipScroll) msgs.scrollTop = msgs.scrollHeight;
     }
 
     function addTyping() {
@@ -151,7 +177,6 @@ document.addEventListener('DOMContentLoaded', () => {
         t._timer = setTimeout(() => t.classList.remove('show'), dur);
     }
 
-
     $('cw-overlay').addEventListener('click', close);
     $('cw-close').addEventListener('click', close);
     $('cw-send').addEventListener('click', sendMsg);
@@ -174,9 +199,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     $$('[data-chat-trigger]').forEach(el => el.addEventListener('click', open));
 
-
     window.ChatWidget = { open, close, showToast };
 
     if (location.pathname.includes('ai-tips')) setTimeout(open, 500);
-
 });
