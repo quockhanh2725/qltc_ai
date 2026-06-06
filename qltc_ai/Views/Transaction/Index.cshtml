@@ -1,9 +1,11 @@
 ﻿@{
     ViewData["Title"] = "Giao Dịch";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["ActivePage"] = "Transaction";
 }
 
 <link rel="stylesheet" href="~/user/css/transaction.css" asp-append-version="true">
+<link rel="stylesheet" href="~/user/css/scan.css" asp-append-version="true">
 
 <div class="main">
     <div class="topbar">
@@ -14,6 +16,7 @@
         <div class="topbar-r">
             <a href="history" class="t-btn outline">📋 Lịch sử</a>
             <div class="notif-btn">🔔</div>
+            <button class="t-btn outline" id="btnOpenScan">📷 Scan hóa đơn</button>
             <button class="t-btn primary" data-chat-trigger>🤖 Hỏi AI</button>
         </div>
     </div>
@@ -181,4 +184,92 @@
     </div>
 </div>
 
+<div class="scan-overlay" id="scanOverlay">
+    <div class="scan-modal">
+
+       
+        <div class="scan-header">
+            <div class="scan-title">📷 Scan hóa đơn</div>
+            <button class="scan-close" id="btnCloseScan">✕</button>
+        </div>
+
+        
+        <div class="scan-tabs">
+            <button class="scan-tab" data-stab="ngrok">📱 QR cho điện thoại</button>
+            <button class="scan-tab active" data-stab="upload">🖼 Tải ảnh lên</button>
+        </div>
+
+        
+        <div class="scan-panel active" id="stabUpload">
+
+            
+            <div class="scan-drop-zone" id="dropZone">
+                <div class="scan-drop-ico">🖼️</div>
+                <div class="scan-drop-txt">
+                    Kéo thả ảnh hóa đơn vào đây<br>
+                    hoặc <strong>nhấn để chọn file</strong>
+                </div>
+            </div>
+            <input type="file" id="fileInput" accept="image/*" style="display:none">
+
+            
+            <div class="scan-thumb-wrap" id="uploadThumb" style="display:none">
+                <img id="uploadThumbImg" src="" alt="preview" />
+            </div>
+
+            
+        </div>
+
+        
+        <div class="scan-panel" id="stabNgrok">
+            <div class="scan-ngrok-section">
+
+               
+                <div class="scan-ngrok-qr">
+                    <div id="ngrokQrCode">
+                        <p style="font-size:12px;color:#64748b;text-align:center;padding:20px">
+                            Đang tải QR...
+                        </p>
+                    </div>
+                    <div class="scan-ngrok-countdown" id="ngrokCountdown">Đang tải...</div>
+                    
+                </div>
+
+                <div class="scan-ngrok-hint">
+                    📱 Mở camera điện thoại → quét QR này<br>
+                    Trang scan tự mở, <strong>không cần đăng nhập</strong><br>
+                    QR tự đổi mỗi 60 giây để bảo mật
+                </div>
+
+            </div>
+        </div>
+
+        
+        <div class="scan-loading" id="scanLoading" style="display:none">
+            <div class="scan-spinner"></div>
+            <div class="scan-loading-txt">Đang phân tích...</div>
+        </div>
+
+       
+        <div class="scan-result-area" id="scanResultArea" style="display:none">
+            <div class="scan-result-title">✅ Kết quả nhận diện</div>
+            <div class="scan-result-row">
+                <label style="font-size:11px;color:#64748b">Ghi chú</label>
+                <input type="text" id="rNote" class="f-inp" placeholder="Nội dung giao dịch..." />
+            </div>
+            <div class="scan-result-row">
+                <label style="font-size:11px;color:#64748b">Số tiền (đồng)</label>
+                <input type="number" id="rMoney" class="f-inp" placeholder="0" inputmode="numeric" />
+            </div>
+            <div class="scan-result-actions">
+                <button class="t-btn primary" id="btnFillForm">✏️ Điền vào form</button>
+                <button class="t-btn outline" id="btnRescan">🔄 Scan lại</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
 <script src="~/user/js/transaction.js" asp-append-version="true"></script>
+<script src="~/user/js/scan.js" asp-append-version="true"></script>

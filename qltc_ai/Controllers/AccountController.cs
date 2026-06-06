@@ -97,6 +97,8 @@ namespace qltc_ai.Controllers
 
             HttpContext.Session.SetInt32("AccountId", acc.IdTaiKhoan);
             HttpContext.Session.SetInt32("RoleId", acc.RoleId ?? 0);
+            HttpContext.Session.SetString("UserName", acc.Nguoidung.TenNguoiDung ?? "");
+            HttpContext.Session.SetString("Email", acc.Email ?? "");
             HttpContext.Session.SetInt32("LoginMonth", now.Month);
             HttpContext.Session.SetInt32("LoginYear", now.Year);
 

@@ -173,7 +173,6 @@ namespace qltc_ai.Controllers
         public IActionResult Classify(string text)
             => Ok(new { category = _aiService.PredictCategory(text) });
 
-        
 
         [AllowAnonymous]
         [HttpGet("scan")]
