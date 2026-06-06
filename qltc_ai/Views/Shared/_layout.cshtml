@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>@ViewData["Title"] - Ví Thông Minh</title>
-
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/user/css/style.css" asp-append-version="true">
 </head>
 <body>
-
     <!-- SIDEBAR -->
     <div class="sidebar">
         <div class="sb-head">
@@ -21,7 +19,6 @@
                 </div>
             </a>
         </div>
-
         <nav class="sb-nav">
             <div class="sb-section">Menu chính</div>
             <a class="nav-btn active" href="/">📊 Tổng quan</a>
@@ -29,7 +26,6 @@
             <a class="nav-btn" href="/category">🎯 Ngân sách</a>
             <a class="nav-btn" href="/history">🕑 Lịch sử</a>
         </nav>
-
         <div class="sb-user">
             <div class="avatar">LY</div>
             <div>
@@ -40,16 +36,12 @@
         </div>
     </div>
 
-        
-            @RenderBody()
-
+    @RenderBody()
     @await Html.PartialAsync("_chat")
-
     @RenderSection("Scripts", required: false)
-
     <script src="~/user/js/chat.js" asp-append-version="true"></script>
     <script src="~/user/js/logout.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
-    
+
 </body>
 </html>

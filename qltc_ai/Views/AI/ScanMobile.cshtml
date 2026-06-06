@@ -1,0 +1,106 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Scan hóa đơn</title>
+    <link rel="stylesheet" href="~/user/css/mobile/mobile.css" asp-append-version="true">
+</head>
+<body>
+
+    <div class="mob-header">
+        <span>🧾</span>
+        <h1>Scan hóa đơn</h1>
+    </div>
+
+    <div class="mob-tabs">
+        <button class="mob-tab active" data-tab="qr">📷 Quét QR</button>
+        <button class="mob-tab" data-tab="photo">🖼 Chụp bill</button>
+    </div>
+
+    <div class="mob-panel active" id="tabQr">
+        <div class="mob-video-wrap">
+            <video id="qrVideo" autoplay playsinline muted></video>
+            <canvas id="qrCanvas"></canvas>
+            <div class="scan-frame">
+                <div class="sf-box">
+                    <div class="c tl"></div><div class="c tr"></div>
+                    <div class="c bl"></div><div class="c br"></div>
+                    <div class="sf-line"></div>
+                </div>
+            </div>
+            <div class="scan-hint">Hướng camera vào mã QR trên hóa đơn</div>
+            <div class="cam-off" id="qrCamOff">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#475569" stroke-width="1.5">
+                    <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                    <circle cx="12" cy="13" r="4" />
+                    <line x1="1" y1="1" x2="23" y2="23" stroke-width="2" />
+                </svg>
+                Camera chưa được bật
+            </div>
+        </div>
+        <div class="mob-btn-row">
+            <button class="mob-btn outline hidden" id="btnQrStop">⏹ Dừng camera</button>
+            <button class="mob-btn primary hidden" id="btnQrRestart">▶ Bật lại camera</button>
+        </div>
+        <div id="qrCountdown" style="display:none;text-align:center;font-size:12px;color:#64748b;margin-top:-4px">
+            Tự tắt sau <span id="qrCountdownSec">60</span>s
+        </div>
+        <div class="mob-loading" id="qrLoading">
+            <div class="mob-spinner"></div>
+            <div class="mob-loading-txt" id="qrLoadingTxt">Đang phân tích...</div>
+        </div>
+        <div class="mob-result" id="qrResult"></div>
+    </div>
+
+    <div class="mob-panel" id="tabPhoto">
+        <div id="photoDrop" style="display:flex;flex-direction:column;gap:10px">
+            <button class="mob-btn primary" id="btnCamera">📷 Chụp ảnh</button>
+            <button class="mob-btn outline" id="btnGallery">🖼 Chọn từ thư viện</button>
+        </div>
+        <input type="file" id="photoInputCamera" accept="image/*" capture="environment" style="display:none" />
+        <input type="file" id="photoInputGallery" accept="image/*" style="display:none" />
+        <div id="photoThumb" class="mob-thumb" style="display:none">
+            <img id="photoThumbImg" src="" alt="preview" />
+        </div>
+        <div class="file-info" id="photoFileInfo"></div>
+        <button class="mob-btn outline hidden" id="btnRetake">🔄 Chụp / chọn lại</button>
+        <div class="mob-loading" id="photoLoading">
+            <div class="mob-spinner"></div>
+            <div class="mob-loading-txt">Đang gửi ảnh lên AI...</div>
+        </div>
+        <div class="mob-result" id="photoResult"></div>
+    </div>
+
+    <div id="submitSection" style="display:none;flex-direction:column;gap:10px;padding:0 16px 20px">
+        <div class="mob-result" id="submitCard" style="display:flex">
+            <div class="mob-result-title">✅ Xác nhận giao dịch</div>
+            <div>
+                <label>Ghi chú <span style="color:#64748b;font-weight:400"></span></label>
+                <input type="text" id="mobNote" placeholder="Mô tả giao dịch..." />
+            </div>
+            <div>
+                <label>Số tiền (đồng) <span style="color:#64748b;font-weight:400"></span></label>
+                <input type="number" id="mobMoney" placeholder="0" inputmode="numeric" />
+            </div>
+            <div class="mob-loading" id="submitLoading">
+                <div class="mob-spinner"></div>
+                <div class="mob-loading-txt">Đang thêm giao dịch...</div>
+            </div>
+            <div class="mob-btn-row">
+                <button class="mob-btn success" id="btnSubmit">💾 Thêm giao dịch</button>
+                <button class="mob-btn outline" id="btnRescan">🔄 Scan lại</button>
+            </div>
+        </div>
+    </div>
+    <script>
+        const SCAN_TOKEN = '@ViewBag.ScanToken';
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/jsqr@1.4.0/dist/jsQR.js"></script>
+    <script src="~/user/js/mobile/mobile.js" asp-append-version="true"></script>
+</body>
+</html>
+

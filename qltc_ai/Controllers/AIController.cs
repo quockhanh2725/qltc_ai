@@ -173,12 +173,7 @@ namespace qltc_ai.Controllers
         public IActionResult Classify(string text)
             => Ok(new { category = _aiService.PredictCategory(text) });
 
-        [HttpPost("retrain")]
-        public IActionResult Retrain()
-        {
-            MLModelsTrainer.Train();
-            return Ok(new { message = "Retrain success" });
-        }
+        
 
         [AllowAnonymous]
         [HttpGet("scan")]
