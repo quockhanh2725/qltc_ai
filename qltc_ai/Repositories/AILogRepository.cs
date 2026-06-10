@@ -1,4 +1,6 @@
-﻿using qltc_ai.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using qltc_ai.Models;
+using qltc_ai.Models.AI;
 
 namespace qltc_ai.Repositories
 {
@@ -14,11 +16,39 @@ namespace qltc_ai.Repositories
             var log = new AiLog
             {
                 IdTaiKhoan = accountId,
-                CauHoi = question.Length > 255 ? question[..255] : question,
-                TraLoi = answer.Length > 255 ? answer[..255] : answer,
+                CauHoi = question,
+                TraLoi = answer,
                 NgayTao = DateTime.Now
             };
             _context.AiLog.Add(log);
+            _context.SaveChanges();
+        }
+
+        public List<AiLogDto> GetAll()
+        {
+            return _context.AiLog
+                .Include(l => l.IdTaiKhoanNavigation)
+                    .ThenInclude(tk => tk.Nguoidung)
+                .OrderByDescending(l => l.NgayTao)
+                .Select(l => new AiLogDto
+                {
+                    IdLog = l.IdLog,
+                    IdTaiKhoan = l.IdTaiKhoan ?? 0,
+                    TenNguoiDung = l.IdTaiKhoanNavigation != null
+                                    ? l.IdTaiKhoanNavigation.Nguoidung != null
+                                        ? l.IdTaiKhoanNavigation.Nguoidung.TenNguoiDung
+                                        : l.IdTaiKhoanNavigation.Email
+                                    : "—",
+                    CauHoi = l.CauHoi,
+                    TraLoi = l.TraLoi,
+                    NgayTao = l.NgayTao
+                })
+                .ToList();
+        }
+
+        public void DeleteAll()
+        {
+            _context.AiLog.RemoveRange(_context.AiLog);
             _context.SaveChanges();
         }
     }

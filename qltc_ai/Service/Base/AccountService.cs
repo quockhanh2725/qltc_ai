@@ -12,7 +12,7 @@ namespace qltc_ai.Service.Base
             _repo = repo;
         }
 
-        public List<Taikhoan> GetAccountAll()
+        public List<object> GetAccountAll()
         {
             return _repo.GetAll();
         }
@@ -28,7 +28,7 @@ namespace qltc_ai.Service.Base
             var ac = new Taikhoan
             {
                 Email = _tk.Email,
-                MatKhau = _tk.MatKhau,
+                MatKhau = HashPassword(_tk.MatKhau ?? ""),
                 RoleId = 2,
                 IsActive = 1,
                 NgayTao = DateTime.Now
@@ -53,6 +53,22 @@ namespace qltc_ai.Service.Base
             _repo.DeleteAccount(acc);
             _repo.Save();
             return true;
+        }
+
+        public bool UpdateStatus(int id, int isActive)
+        {
+            var tk = _repo.FindById(id);
+            if (tk == null) return false;
+            tk.IsActive = (sbyte?)isActive;
+            _repo.Save();
+            return true;
+        }
+        private string HashPassword(string password)
+        {
+            using var sha = System.Security.Cryptography.SHA256.Create();
+            var bytes = System.Text.Encoding.UTF8.GetBytes(password);
+            var hash = sha.ComputeHash(bytes);
+            return Convert.ToHexString(hash).ToLower();
         }
     }
 }
