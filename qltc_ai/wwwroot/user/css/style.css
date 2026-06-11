@@ -19,6 +19,7 @@ html,body{height:100%;overflow:hidden}
 body{font-family:'Be Vietnam Pro',sans-serif;background:var(--bg);color:var(--text);display:flex;font-size:14px}
 a{text-decoration:none;color:inherit}
 button{font-family:inherit;cursor:pointer}
+button#btn-logout {margin-left: auto;background: none;border: none;color: var(--text3);cursor: pointer;font-size: 16px;padding: 4px;border-radius: 5px;transition: .15s;}
 ::-webkit-scrollbar{width:4px;height:4px}
 ::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
 
