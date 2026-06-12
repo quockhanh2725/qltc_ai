@@ -1,10 +1,148 @@
-﻿﻿@{
-    ViewData["Title"] = "Ngân Sách";
+﻿@{
+    ViewData["Title"] = "Lịch sử giao dịch";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["ActivePage"] = "History";
 }
-<!DOCTYPE html>
-<html>
-<body>
-    <h2>history</h2>
-</body>
-</html>
+
+<link rel="stylesheet" href="~/user/css/style.css" asp-append-version="true">
+<link rel="stylesheet" href="~/user/css/history.css" asp-append-version="true">
+
+<div class="main">
+    <div class="topbar">
+        <div>
+            <div class="topbar-title">Lịch sử giao dịch</div>
+            <div class="topbar-sub">Tất cả giao dịch</div>
+        </div>
+        <div class="topbar-r">
+            <div class="notif-btn">🔔</div>
+            <a href="/transaction" class="t-btn primary">+ Thêm giao dịch</a>
+            <button data-chat-trigger class="t-btn outline">🤖 Hỏi AI</button>
+        </div>
+    </div>
+
+    <div class="page-body">
+
+        <!-- Summary cards -->
+        <div class="hist-top-cards">
+            <div class="hist-card">
+                <div class="hist-card-ico bg-green">💵</div>
+                <div>
+                    <div class="hist-card-val c-green" id="cardInc">—</div>
+                    <div class="hist-card-lbl">Tổng thu nhập</div>
+                </div>
+            </div>
+            <div class="hist-card">
+                <div class="hist-card-ico bg-red">💸</div>
+                <div>
+                    <div class="hist-card-val c-red" id="cardExp">—</div>
+                    <div class="hist-card-lbl">Tổng chi tiêu</div>
+                </div>
+            </div>
+            <div class="hist-card">
+                <div class="hist-card-ico bg-indigo">💎</div>
+                <div>
+                    <div class="hist-card-val c-indigo" id="cardSav">—</div>
+                    <div class="hist-card-lbl">Tiết kiệm ròng</div>
+                </div>
+            </div>
+            <div class="hist-card">
+                <div class="hist-card-ico bg-amber">🧾</div>
+                <div>
+                    <div class="hist-card-val" id="cardCount">—</div>
+                    <div class="hist-card-lbl">Số giao dịch</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Transaction table -->
+        <div class="tx-table-wrap">
+            <div class="tx-table-head">
+                <span class="tx-table-title">Tất cả giao dịch</span>
+                <input class="hist-search" placeholder="🔍  Tìm theo tên, danh mục..." id="searchInp">
+                <select class="hist-select" id="catFilter">
+                    <option value="">Tất cả danh mục</option>
+                    <option>Ăn uống</option>
+                    <option>Di chuyển</option>
+                    <option>Mua sắm</option>
+                    <option>Nhà ở</option>
+                    <option>Sức khỏe</option>
+                    <option>Giải trí</option>
+                    <option>Thu nhập</option>
+                </select>
+                <select class="hist-select" id="typeFilter">
+                    <option value="">Tất cả loại</option>
+                    <option value="inc">Thu nhập</option>
+                    <option value="exp">Chi tiêu</option>
+                </select>
+            </div>
+
+            <div class="tx-scroll">
+                <table class="hist-table">
+                    <thead>
+                        <tr>
+                            <th>Ngày &amp; Giờ</th>
+                            <th>Tên giao dịch</th>
+                            <th>Danh mục</th>
+                            <th>Loại</th>
+                            <th class="text-right">Số tiền</th>
+                            <th class="th-action">Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody id="txBody"></tbody>
+                </table>
+            </div>
+
+            <div class="pagination-bar">
+                <span class="tx-count" id="txCount"></span>
+                <div id="paginationWrap"></div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<!-- Edit modal -->
+<div class="modal-overlay" id="editModal">
+    <div class="modal">
+        <div class="modal-title">✏️ Sửa giao dịch</div>
+        <div class="modal-sub">Cập nhật thông tin giao dịch</div>
+
+        <input type="hidden" id="editId">
+
+        <div class="modal-fields">
+            <div class="f-grp">
+                <div class="f-lbl">TÊN GIAO DỊCH</div>
+                <input class="f-inp" id="editName" placeholder="Tên giao dịch...">
+            </div>
+            <div class="f-grp">
+                <div class="f-lbl">SỐ TIỀN (VNĐ)</div>
+                <input class="f-inp" id="editAmt" placeholder="0" inputmode="numeric">
+            </div>
+
+        </div>
+
+        <div class="modal-actions">
+            <button class="modal-btn cancel" id="btnEditCancel">Huỷ</button>
+            <button class="modal-btn save" id="btnEditSave">💾 Lưu thay đổi</button>
+        </div>
+    </div>
+</div>
+
+<!-- Delete modal -->
+<div class="modal-overlay" id="delModal">
+    <div class="modal modal-sm">
+        <div class="modal-title">🗑 Xoá giao dịch?</div>
+        <div class="modal-sub" id="delModalSub"></div>
+
+        <input type="hidden" id="delId">
+
+        <div class="del-warning">⚠️ Hành động này không thể hoàn tác.</div>
+
+        <div class="modal-actions">
+            <button class="modal-btn cancel" id="btnDelCancel">Giữ lại</button>
+            <button class="modal-btn danger" id="btnDelConfirm">🗑 Xoá</button>
+        </div>
+    </div>
+</div>
+
+<script src="~/user/js/history.js" asp-append-version="true"></script>
