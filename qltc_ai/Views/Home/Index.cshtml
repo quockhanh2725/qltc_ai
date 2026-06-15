@@ -2,21 +2,87 @@
 @{
     ViewData["Title"] = "Trang Chủ";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewData["ActivePage"] = "Home";
 }
-<!DOCTYPE html>
-<html>
-<body>
 
-    <h2>
-        @if (Model)
-        {
-            <span style="color:green">✅ Kết nối DB thành công</span>
-        }
-        else
-        {
-            <span style="color:red">❌ Kết nối DB thất bại</span>
-        }
-    </h2>
+<link rel="stylesheet" href="~/user/css/style.css" asp-append-version="true">
 
-</body>
-</html>
+<div class="main">
+    <div class="topbar">
+        <div>
+            <div class="topbar-title">Tổng quan tháng 6</div>
+            <div class="topbar-sub">Cập nhật lúc 14:32 · 19/06/2026</div>
+        </div>
+        
+    </div>
+
+    <div class="page-body">
+
+
+        <div class="grid-2b">
+            <div class="card">
+                <div class="card-title">Thu nhập &amp; Chi tiêu theo tuần</div>
+                <div class="card-sub">Tháng 6/2026 · 4 tuần</div>
+                <div class="chart-wrap" style="height:220px">
+                    <canvas id="chartWeekly" role="img" aria-label="Biểu đồ thu nhập và chi tiêu 4 tuần tháng 6/2026"></canvas>
+                </div>
+                <div class="legend">
+                    <div class="leg"><span class="leg-dot" style="background:#22c55e"></span>Thu nhập</div>
+                    <div class="leg"><span class="leg-dot" style="background:#ef4444"></span>Chi tiêu</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Xu hướng 6 tháng gần nhất</div>
+                <div class="card-sub">Tháng 1/2025 – 6/2026</div>
+                <div class="chart-wrap" style="height:220px">
+                    <canvas id="chartTrend" role="img" aria-label="Xu hướng thu chi 6 tháng gần nhất"></canvas>
+                </div>
+                <div class="legend">
+                    <div class="leg"><span class="leg-dot" style="background:#6366f1"></span>Thu nhập</div>
+                    <div class="leg"><span class="leg-dot" style="background:#f97316"></span>Chi tiêu</div>
+                    <div class="leg"><span class="leg-dot" style="background:#14b8a6"></span>Tiết kiệm</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2b">
+            <div class="card">
+                <div class="card-title">Chi tiêu theo danh mục</div>
+                <div class="card-sub">Tháng 6/2026 · tổng 9.240.000đ</div>
+                <div class="chart-wrap" style="height:240px">
+                    <canvas id="chartDonut" role="img" aria-label="Biểu đồ tròn chi tiêu theo danh mục tháng 6"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Tiến độ ngân sách</div>
+                <div class="card-sub">Chi thực tế so với hạn mức tháng 6</div>
+                <div class="chart-wrap" style="height:240px">
+                    <canvas id="chartBudget" role="img" aria-label="Biểu đồ thanh ngang tiến độ ngân sách theo danh mục"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <div class="grid-2b">
+            <div class="card">
+                <div class="card-title">Chi tiêu theo khung giờ</div>
+                <div class="card-sub">Trung bình mỗi ngày trong tháng 3</div>
+                <div class="chart-wrap" style="height:240px">
+                    <canvas id="chartRadar" role="img" aria-label="Biểu đồ radar chi tiêu theo khung giờ trong ngày"></canvas>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-title">Tích lũy tiết kiệm</div>
+                <div class="card-sub">Lũy kế theo ngày trong tháng 6</div>
+                <div class="chart-wrap" style="height:240px">
+                    <canvas id="chartSavings" role="img" aria-label="Biểu đồ đường tích lũy tiết kiệm theo ngày"></canvas>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="~/user/js/home.js"></script>
